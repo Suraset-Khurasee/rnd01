@@ -15,5 +15,14 @@ title: Home
 
 This site is the working documentation for the project. Add notes, experiment results, setup instructions, and decisions as Markdown files in the [`docs/`](docs/) folder.
 
+## Project goal
 
-- [Journal](docs/J-directory.md)
+Successfully control the robotic arm to pick up and place objects in designated locations.
+
+### Stretch goal
+
+Complete the task with smooth, accurate movements and design a showcase for the Science Centre.
+
+## Documents
+
+- [How We Set Up Gitpages](docs/HWSGP.md)
