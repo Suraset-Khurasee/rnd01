@@ -1,4 +1,10 @@
-###Journal Directory
+---
+layout: default
+title: Journal Directory
+---
 
-Day I
-- [How We Set Up Gitpages](docs/HWSGP.md)
+# Journal Directory
+
+## Day 1
+
+- [How We Set Up GitHub Pages](/rnd01/docs/HWSGP/)
