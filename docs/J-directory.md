@@ -9,9 +9,6 @@ title: Journal Directory
 
 - [How We Set Up GitHub Pages](/rnd01/docs/HWSGP/)
 - [Acknowledgement Of Nero Safety Manual](/rnd01/docs/ack)
-<<<<<<< HEAD
-- [Robotics Document Takeaways](/rnd01/docs/rdoc)
-=======
 
 ### Environment in Programming 
 
@@ -32,7 +29,8 @@ This robotic arm is using the ALOHA system. ALOHA stands for A Low-cost Open-sou
 
 The ALOHA system aims to perform tasks that require precise movement and respond to physical environment changes. However it needs to fulfill these 5 requirements.
 1) Low-cost: The entire system should be within budget for most robotic labs, comparable to a single industrial arm. 
-2) Versatile: It can be applied to a wide range of fine manipulation tasks with real-world objects. 3) User-friendly: The system should be intuitive, reliable, and easy to use. 
+2) Versatile: It can be applied to a wide range of fine manipulation tasks with real-world objects. 
+3) User-friendly: The system should be intuitive, reliable, and easy to use. 
 4) Repairable: The setup can be easily repaired by researchers, when it inevitably breaks. 
 5) Easy-to-build: It can be quickly assembled by researchers, with easy-to-source materials. 
 
