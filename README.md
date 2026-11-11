@@ -1,23 +1,30 @@
 # CE-0169 documentation
 
-This directory is a dependency-free documentation site for **CE-0169: Nero Robotic Arm Teleoperation: Evaluating Control Methods for Public Demonstrations**, ready to publish with GitHub Pages.
+This is a simple Markdown-first GitHub Pages site for **CE-0169: Nero Robotic Arm Teleoperation**.
 
-The project is hosted by Science Centre Singapore and uses an AgileX Nero robotic arm. The current project start date is **11 November 2026**.
+## Add documentation
+
+Put Markdown files in `docs/`. Copy `docs/template.md`, give the page a title, and add front matter:
+
+```yaml
+---
+layout: default
+title: My document
+---
+```
+
+Use `docs/README.md` for the full logging format and current document list.
 
 ## Local preview
 
-Open `index.html` directly, or serve the directory with any static HTTP server:
+The site is built by Jekyll in GitHub Actions. To preview locally, install Jekyll and run:
 
 ```sh
-python3 -m http.server 8000
+bundle exec jekyll serve
 ```
 
-Then visit <http://localhost:8000>.
+## Deployment
 
-## Publish with GitHub Pages
+Push commits to `main`. The workflow builds the Markdown files and deploys them automatically to:
 
-1. Push this directory to a GitHub repository.
-2. In **Settings → Pages**, choose **GitHub Actions** as the source.
-3. The included workflow deploys the site on every push to the default branch.
-
-The project details are documented in the site pages. Replace the placeholder GitHub URL in the navigation once the repository is known.
+<https://suraset-khurasee.github.io/rnd01/>

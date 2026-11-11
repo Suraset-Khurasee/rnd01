@@ -1,0 +1,9 @@
+title: CE-0169 Documentation
+description: Nero Robotic Arm Teleoperation
+theme: null
+markdown: kramdown
+permalink: pretty
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

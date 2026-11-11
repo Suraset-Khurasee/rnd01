@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title }} · {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav aria-label="Primary navigation">
+        <a href="{{ '/' | relative_url }}">Home</a>
+        <a href="{{ '/docs/' | relative_url }}">Documents</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      {{ content }}
+    </main>
+    <footer class="site-footer">
+      <span>{{ site.title }}</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>
