@@ -25,6 +25,12 @@ bundle exec jekyll serve
 
 ## Deployment
 
-Push commits to `main`. The workflow builds the Markdown files and deploys them automatically to:
+Push commits to `main`. The workflow builds the Markdown files and deploys
+them automatically. New Markdown pages must start with Jekyll front matter
+(`layout` and `title`) so they are included in the generated site.
 
 <https://suraset-khurasee.github.io/rnd01/>
+
+The workflow can also be started manually from the repository's **Actions**
+tab. After a successful deployment, a browser or CDN may continue showing an
+older page for up to a few minutes; refresh after the deployment completes.

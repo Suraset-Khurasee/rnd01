@@ -1,3 +1,9 @@
-##How we set up GITPAGES
+---
+layout: default
+title: How we set up GitHub Pages
+---
 
-Placeherder
+# How we set up GitHub Pages
+
+This page records how the project documentation site is configured and
+deployed.
