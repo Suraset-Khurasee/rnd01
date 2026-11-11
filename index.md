@@ -13,21 +13,7 @@ title: Home
 **Participants:** 3  
 **Equipment:** AgileX Nero robotic arm
 
-This site is the working documentation for the project. Add notes, experiment results, setup instructions, and decisions as Markdown files in the [`docs/`](docs/) folder.
-
-## Media
-
-Images and animated GIFs can be added to the [`images/`](images/) folder and embedded directly in Markdown:
-
-![TL](images/TL.jpg)
-
-## Project goal
-
-Successfully control the robotic arm to pick up and place objects in designated locations.
-
-### Stretch goal
-
-Complete the task with smooth, accurate movements and design a showcase for the Science Centre.
+This site is the working documentation for the project.
 
 ## OUR RDP JOURNALS
 
