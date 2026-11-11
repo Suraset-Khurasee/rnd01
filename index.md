@@ -25,4 +25,4 @@ Complete the task with smooth, accurate movements and design a showcase for the 
 
 ## OUR RDP JOURNALS
 
-- [Day 1:](docs/J-directory.md)
+- [Day 1](docs/J-directory.md)
