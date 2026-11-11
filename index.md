@@ -23,6 +23,6 @@ Successfully control the robotic arm to pick up and place objects in designated 
 
 Complete the task with smooth, accurate movements and design a showcase for the Science Centre.
 
-## Documents
+## OUR RDP JOURNALS
 
-- [How We Set Up Gitpages](docs/HWSGP.md)
+- [Day 1:](docs/J-directory.md)
