@@ -17,4 +17,4 @@ This site is the working documentation for the project.
 
 ## OUR RDP JOURNALS
 
-- [Day 1](docs/J-directory.md)
+- [Day 1](docs/day1.md)
