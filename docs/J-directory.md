@@ -9,3 +9,4 @@ title: Journal Directory
 
 - [How We Set Up GitHub Pages](/rnd01/docs/HWSGP/)
 - [Acknowledgement Of Nero Safety Manual](/rnd01/docs/ack)
+- [Robotics Document Takeaways](/rnd01/docs/rdoc)
