@@ -12,4 +12,4 @@ deployed.
 
 2. This webpage is managed by all 3 members of the team, where we put anny and all of our ideations on a day-by-day basis for the entirity of this programme
 
-3. Finally, 
+3. Finally, We have a working webpage to compiile ALL documentation :)
