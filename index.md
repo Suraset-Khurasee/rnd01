@@ -15,6 +15,12 @@ title: Home
 
 This site is the working documentation for the project. Add notes, experiment results, setup instructions, and decisions as Markdown files in the [`docs/`](docs/) folder.
 
+## Media
+
+Images and animated GIFs can be added to the [`images/`](images/) folder and embedded directly in Markdown:
+
+![TL](images/TL.jpg)
+
 ## Project goal
 
 Successfully control the robotic arm to pick up and place objects in designated locations.
