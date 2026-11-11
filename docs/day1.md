@@ -9,7 +9,7 @@ title: Journal Directory
 
 - [Tony Zhao's GitPage](https://tonyzhaozh.github.io/aloha/)
 - [Tony Zhao's Paper](https://www.roboticsproceedings.org/rss19/p016.pdf)
-- [NERO Safety Manual: ](https://fccid.io/m/e4a1f4677089345f4f41362cab378d66a027223cbb746da1ac1ca1ac08bf0e31.pdf)
+- [NERO Safety Manual](https://fccid.io/m/e4a1f4677089345f4f41362cab378d66a027223cbb746da1ac1ca1ac08bf0e31.pdf)
 
 ## Skills We Learned
 
