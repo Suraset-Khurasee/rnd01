@@ -25,7 +25,4 @@ Complete the task with smooth, accurate movements and design a showcase for the 
 
 ## Documents
 
-- [Project brief](docs/project-brief.md)
-- [Milestones](docs/milestones.md)
-- [Safety and experiment log](docs/experiment-log.md)
-- [How to add a document](docs/README.md)
+- [How We Set Up Gitpages](docs/HWSGP.md)
