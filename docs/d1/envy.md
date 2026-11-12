@@ -17,4 +17,3 @@ Environment in programming refers to the context in which code runs. It includes
 
 **5. Hosted Environment:** Where the software runs on remote servers which makes the code available for multiple machines.
 
-
