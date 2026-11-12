@@ -1,2 +1,2 @@
-## Armlink -- The web wizard for arm manual control.
+## Armlink -- The web wizard for robotic arm manual control.
 
