@@ -14,4 +14,4 @@ deployed.
 
 3. Finally, We have a working webpage to compiile ALL documentation :)
 
-- [*Check out our GitPage: *](https://github.com/Suraset-Khurasee/rnd01)
+- [**Check out our GitPage source code**](https://github.com/Suraset-Khurasee/rnd01)

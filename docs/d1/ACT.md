@@ -11,7 +11,7 @@ Humans can control the robot arms through a human-operated interface. Humans phy
 ## ALOHA System 
 This robotic arm is using the ALOHA system. ALOHA stands for A Low-cost Open-source Hardware System for Bimanual Teleoperation. It is a robotic system developed by researchers to make advanced robotic manipulation research more accessible. 
 
-The ALOHA system aims to perform tasks that require precise movement and respond to physical environment changes. However it needs to fulfill these 5 requirements.
+The ALOHA system aims to perform tasks that require precise movement and respond to physical environment changes. However it needs to fulfill these 5 requirements. 
 
 1) Low-cost: The entire system should be within budget for most robotic labs, comparable to a single industrial arm. 
 
@@ -39,3 +39,6 @@ Firstly, it requires a substantial amount of demonstration data and training bef
 Secondly, ACT has computational requirements that may limit its practical implementation. In the paper, the model has approximately 80 million parameters and requires around five hours of training on an RTX 2080 Ti GPU. Although inference takes approximately 0.01 seconds on the same GPU, sufficient computational resources are still necessary to generate predictions frequently enough for real-time robotic control.
 
 Lastly, ACT does not guarantee physical accuracy or reliable performance in unfamiliar situations. In unfamilliar environments, the system might not recognises the target object. One limitation of ACT is its sensitivity to changes in the environment and visual observations. Since ACT learns through demonstrations, significant differences in camera positions, lighting conditions, background or robotic arm configurations may affect its ability to perform tasks reliably. Therefore, maintaining a consistent experimental setup is important when collecting training data and evaluating performance. Although object positions and orientations can be varied to investigate the model's generalisation ability, these variations must remain within the robot's working area and be carefully controlled to ensure fair and reliable experimental results.
+
+*Resources Used*
+[Tony Zhao's Paper on ALOHA System](https://www.roboticsproceedings.org/rss19/p016.pdf)
