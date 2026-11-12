@@ -14,7 +14,8 @@ title: Home
 **Equipment:** AgileX Nero robotic arm
 
 This site is the working documentation for the project.
-
+# [Ideations](docs/Ideation.md)
 ## OUR RDP JOURNALS
 
-- [Day 1](docs/day1.md)
+- [Day 1](docs/day1/)
+- [Day 2](docs/day2/)
