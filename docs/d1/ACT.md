@@ -42,3 +42,4 @@ Lastly, ACT does not guarantee physical accuracy or reliable performance in unfa
 
 *Resources Used*
 [Tony Zhao's Paper on ALOHA System](https://www.roboticsproceedings.org/rss19/p016.pdf)
+[Tony Zhao's GitPage](https://tonyzhaozh.github.io/aloha/)
