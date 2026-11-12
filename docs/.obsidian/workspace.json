@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/d2/IK.md",
+                "file": "day2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "IK"
+              "title": "day2"
             }
           }
         ],
@@ -142,7 +142,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/d2/IK.md",
+                "file": "day2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -161,7 +161,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/d2/IK.md",
+                "file": "day2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -204,7 +204,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/d2/IK.md",
+                "file": "day2.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -233,11 +233,12 @@
   },
   "active": "323dbae648ae1b16",
   "lastOpenFiles": [
-    "day2.md",
+    "docs",
     "docs/d2/IK.md",
     "docs/d2",
-    "docs",
+    "d2/IK.md~",
     "day2.md~",
+    "day2.md",
     "day1.md",
     "Ideation.md",
     "d2/IK.md",

@@ -1,3 +1,8 @@
+---
+layout: default
+title: Safety Acknowledgements
+---
+
 # Safety Acknowledgements
 
 We have thouroughly read and acknowledged all safety instructions on the AgileX Nero arm, this includes 

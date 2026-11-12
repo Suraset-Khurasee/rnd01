@@ -3,6 +3,8 @@ layout: default
 title: Home
 ---
 
+![Project overview]({{ '/images/1stop.jpg' | relative_url }})
+
 # CE-0169: Nero Robotic Arm Teleoperation
 
 ## Evaluating control methods for public demonstrations
@@ -14,7 +16,7 @@ title: Home
 **Equipment:** AgileX Nero robotic arm
 
 This site is the working documentation for the project.
-# [Ideations](docs/Ideation.md)
+# [Ideations](docs/Ideation)
 ## OUR RDP JOURNALS
 
 - [Day 1](docs/day1/)

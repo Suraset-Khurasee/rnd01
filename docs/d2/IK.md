@@ -1,8 +1,64 @@
-### Inverse Kinematics
-To understand Inverse Kinematics (will refer to as IK from now on) we first have to understand Forward Kinematics (FK)
+---
+layout: default
+title: Inverse Kinematics
+---
+
+# Inverse Kinematics
+
+Inverse kinematics (IK) calculates the joint configuration needed to place a
+robot's end effector at a desired position and orientation. Forward kinematics
+does the reverse: it uses the joint angles to calculate the end-effector pose.
+For a 7-DoF arm, IK usually has multiple valid solutions, so joint limits,
+collision avoidance, and the preferred elbow configuration must be considered.
 
 ## Forward Kinematics
-Forward kinematics in the context of a 7 DoF robotic arm requires more calculation than a simple 2D arm, but before we understand the Denavit-Hartenberg convention, we have to start with the simple, boring stuff. Imagine this 
+Forward kinematics for a 7-DoF robotic arm requires more calculation than for a
+simple 2D arm. Each joint contributes a transformation, and multiplying these
+transformations gives the pose of the end effector:
+
+`T_0^n = A_1(q_1) A_2(q_2) ... A_n(q_n)`
+
+Here, `q_i` is the angle or displacement of joint `i`, and `A_i` is the
+transformation from one link frame to the next.
+
+## Denavit-Hartenberg configuration
+
+The Denavit-Hartenberg (DH) convention describes each link using four
+parameters:
+
+| Parameter | Meaning |
+| --- | --- |
+| `a_i` | Link length along the x-axis |
+| `alpha_i` | Link twist about the x-axis |
+| `d_i` | Link offset along the z-axis |
+| `theta_i` | Joint angle about the z-axis |
+
+Using the standard DH convention, one link transformation is:
+
+`A_i = Rot(z, theta_i) Trans(z, d_i) Trans(x, a_i) Rot(x, alpha_i)`
+
+Before solving IK, the DH table must match the physical robot. The joint axes
+should be measured consistently, the zero-angle position should match the
+controller, and the units should be kept consistent. For a revolute joint,
+`theta_i` normally changes with the joint angle while `d_i` remains fixed.
+
+## Practical IK workflow
+
+1. Define the desired end-effector pose in the robot base frame.
+2. Use the DH table to calculate the forward-kinematics pose.
+3. Solve for joint angles that minimize position and orientation error.
+4. Reject solutions outside joint limits or inside collision regions.
+5. Send the selected joint configuration only after checking velocity,
+   acceleration, and workspace limits.
+
+For iterative numerical IK, the Jacobian relates small joint changes to a
+small change in the end-effector pose:
+
+`Delta x = J(q) Delta q`
+
+The pseudoinverse of `J` can be used to update the joints, while a damping
+term helps near singular configurations. The final solution should always be
+validated with forward kinematics and the arm's safety limits.
 
 
 
@@ -18,5 +74,6 @@ Forward kinematics in the context of a 7 DoF robotic arm requires more calculati
 
 
 
-Sources : 
+## Source
+
 [Duke University Forward Kinematics](https://users.cs.duke.edu/~brd/Teaching/Bio/asmb/current/Papers/chap3-forward-kinematics.pdf)

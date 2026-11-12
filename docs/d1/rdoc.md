@@ -1,3 +1,8 @@
+---
+layout: default
+title: Nero Robotic Arm Documentation
+---
+
 # Nero Robotic Arm: Functional and Teleoperation Takeaways
 
 Source: **AGILE X 7-DoF Nero Robotic Arm User Manual, V1.0.0** (`NeDoc.pdf`).

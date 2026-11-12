@@ -1,3 +1,8 @@
+---
+layout: default
+title: Teleoperation and ACT
+---
+
 # Teleoperation and ACT
 
 ## Takeaways from Teleoperation
