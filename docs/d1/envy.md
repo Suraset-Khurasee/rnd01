@@ -5,6 +5,8 @@ title: Environment in Programming
 
 # Environment in Programming 
 
+
+## What is an environment?
 Environment in programming refers to the context in which code runs. It includes a combination of the hardware, operating system, software, and more which influence the software development and execution process. Hence, the name “Environment” which is a reference to how our environment affects our behaviours and thoughts. There are 5 main types of environment:
 
 **1. Development Environment:** Where developers write and test their code.
@@ -17,3 +19,6 @@ Environment in programming refers to the context in which code runs. It includes
 
 **5. Hosted Environment:** Where the software runs on remote servers which makes the code available for multiple machines.
 
+## Importance of environments
+
+Having separate environments, with each having a dedicated purpose, helps prevent changes in one stage of development from breaking another stage.
