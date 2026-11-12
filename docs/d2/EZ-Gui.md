@@ -8,13 +8,12 @@ Preview of the gui :
 
 
 
-EZ-GUI documentaiton:
+EZ-GUI documentation:
 Running the GUI, the terminal commands that get usually 
 
 
-Limitations :
+Errors and limitations:
 - Process stop button doesnt close the app that logs the joints' activities
--  White text in the gui (solved)
-- When the arm has an error (and It usually does) the user would have to manually go to chrome, admin and then do the admin pasword, stop arm, clear errors, start arm. We can't really fix that as it is external from the computer, so USER BEWARE.
-- CAN socket when connected shows up although the robot's power is off.
+- When the arm has an error (and It usually does) the user would have to manually go to chrome, admin and then do the admin pasword, stop arm, clear errors, start arm. We can't really fix that as it is external from the computer, so USER BEWARE. (actually dont need to when you turn on teleoperation mode, the arm automatically turns on)
+- CAN socket when connected shows "UP" although the robot's power is off. Can be changed to "DOWN" if offline
 - When improperly closing the GUI the program infinitely runs on autonomous rollout 
