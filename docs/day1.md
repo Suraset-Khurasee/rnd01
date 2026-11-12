@@ -13,8 +13,8 @@ title: Journal Directory
 
 ## Skills We Learned
 
-- [How We Set Up GitHub Pages](../d1/HWSGP)
-- [Acknowledgement Of Nero Safety manipulation](../d1/ack)
-- [Robotics Documentation](../d1/rdoc)
-- [Environments in Programming](../d1/envy)
-- [Teleoperation & ACT](../d1/ACT)
+- [How We Set Up GitHub Pages](../d1/HWSGP/)
+- [Acknowledgement Of Nero Safety manipulation](../d1/ack/)
+- [Robotics Documentation](../d1/rdoc/)
+- [Environments in Programming](../d1/envy/)
+- [Teleoperation & ACT](../d1/ACT/)
