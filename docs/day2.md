@@ -7,7 +7,7 @@ title: Journal Directory
 ## Skills We Learnt
 [Inverse Kinematics](../d2/IK/)
 
-## Projects Developed
+## Developments
 [Ez-GUI - Finished](../d2/EZ-Gui/)
 
 [ArmLink - Under Development](../d2/ArmLink/)
