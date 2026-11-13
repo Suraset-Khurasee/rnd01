@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Documents · CE-0169 Documentation</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">CE-0169 Documentation</a>
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/docs/">Documents</a>
+        <a href="/docs/d2/structure/">Arm Structure</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      <h1 id="documents">Documents</h1>
+
+<p>This folder is the project log. Add one Markdown file per topic, experiment, meeting, or decision.</p>
+
+<h2 id="add-a-document">Add a document</h2>
+
+<ol>
+  <li>Create a file in <code class="language-plaintext highlighter-rouge">docs/</code>, for example <code class="language-plaintext highlighter-rouge">docs/pick-and-place-test-01.md</code>.</li>
+  <li>
+    <p>Start it with front matter:</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s">Pick and place test </span><span class="m">01</span>
+<span class="nn">---</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Write the document using normal Markdown.</li>
+  <li>Add a link to this page or <code class="language-plaintext highlighter-rouge">index.md</code>.</li>
+  <li>Commit and push to <code class="language-plaintext highlighter-rouge">main</code>. GitHub Pages will deploy it automatically.</li>
+</ol>
+
+<h2 id="suggested-log-format">Suggested log format</h2>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># Experiment title</span>
+
+<span class="gs">**Date:**</span> 2026-11-11  
+<span class="gs">**Objective:**</span> What are you testing?
+
+<span class="gu">## Setup</span>
+
+Describe the robot, controller, software, object, and destination.
+
+<span class="gu">## Results</span>
+
+Record what happened, measurements, issues, and screenshots or links.
+
+<span class="gu">## Next steps</span>
+
+Record the next change to try.
+</code></pre></div></div>
+
+<h2 id="available-documents">Available documents</h2>
+
+<ul>
+  <li><a href="project-brief.md">Project brief</a></li>
+  <li><a href="milestones.md">Milestones</a></li>
+  <li><a href="experiment-log.md">Safety and experiment log</a></li>
+</ul>
+
+    </main>
+    <footer class="site-footer">
+      <span>CE-0169 Documentation</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>

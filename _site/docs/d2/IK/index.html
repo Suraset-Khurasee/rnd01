@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inverse Kinematics · CE-0169 Documentation</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">CE-0169 Documentation</a>
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/docs/">Documents</a>
+        <a href="/docs/d2/structure/">Arm Structure</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      <h1 id="inverse-kinematics">Inverse Kinematics</h1>
+
+<p>Inverse kinematics (IK) calculates the joint configuration needed to place a
+robot’s end effector at a desired position and orientation. Forward kinematics
+does the reverse: it uses the joint angles to calculate the end-effector pose.
+For a 7-DoF arm, IK usually has multiple valid solutions, so joint limits,
+collision avoidance, and the preferred elbow configuration must be considered.</p>
+
+<h2 id="forward-kinematics">Forward Kinematics</h2>
+<p>Forward kinematics for a 7-DoF robotic arm requires more calculation than for a
+simple 2D arm. Each joint contributes a transformation, and multiplying these
+transformations gives the pose of the end effector:</p>
+
+<p><code class="language-plaintext highlighter-rouge">T_0^n = A_1(q_1) A_2(q_2) ... A_n(q_n)</code></p>
+
+<p>Here, <code class="language-plaintext highlighter-rouge">q_i</code> is the angle or displacement of joint <code class="language-plaintext highlighter-rouge">i</code>, and <code class="language-plaintext highlighter-rouge">A_i</code> is the
+transformation from one link frame to the next.</p>
+
+<h2 id="practical-ik-workflow">Practical IK workflow</h2>
+
+<ol>
+  <li>Define the desired end-effector pose in the robot base frame.</li>
+  <li>Use the DH table to calculate the forward-kinematics pose.</li>
+  <li>Solve for joint angles that minimize position and orientation error.</li>
+  <li>Reject solutions outside joint limits or inside collision regions.</li>
+  <li>Send the selected joint configuration only after checking velocity,
+acceleration, and workspace limits.</li>
+</ol>
+
+<p>For iterative numerical IK, the Jacobian relates small joint changes to a
+small change in the end-effector pose:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Delta x = J(q) Delta q</code></p>
+
+<p>The pseudoinverse of <code class="language-plaintext highlighter-rouge">J</code> can be used to update the joints, while a damping
+term helps near singular configurations. The final solution should always be
+validated with forward kinematics and the arm’s safety limits.</p>
+
+<h2 id="source">Source</h2>
+
+<p><a href="https://users.cs.duke.edu/~brd/Teaching/Bio/asmb/current/Papers/chap3-forward-kinematics.pdf">Duke University Forward Kinematics</a></p>
+
+    </main>
+    <footer class="site-footer">
+      <span>CE-0169 Documentation</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>

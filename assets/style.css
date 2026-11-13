@@ -121,6 +121,297 @@ pre code {
   font-size: 0.9rem;
 }
 
+/* Kinematics page */
+.kinematics-page {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.kinematics-intro {
+  max-width: 700px;
+  margin-bottom: 34px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--link);
+  font: 700 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.16em;
+}
+
+.kinematics-intro h1 {
+  margin-bottom: 10px;
+}
+
+.lede {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.kinematics-app {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.arm-stage {
+  min-width: 0;
+  padding: 22px;
+  background: #edf2f5;
+  border-right: 1px solid var(--border);
+}
+
+.arm-canvas {
+  display: block;
+  width: 100%;
+  min-height: 480px;
+  background: #f8fafb;
+  border: 1px solid #cbd4db;
+}
+
+.axis-line {
+  stroke: #b6c1ca;
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+}
+
+.axis-label,
+.base-label {
+  fill: #667580;
+  font: 700 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.arm-link {
+  stroke: #1558a6;
+  stroke-linecap: square;
+  stroke-width: 18;
+}
+
+.link-two {
+  stroke: #2784b8;
+}
+
+.link-three {
+  stroke: #56a8b7;
+}
+
+.joint {
+  fill: #f8fafb;
+  stroke: #20252b;
+  stroke-width: 4;
+}
+
+.joint-base {
+  fill: #20252b;
+}
+
+.end-effector {
+  fill: #f4b740;
+  stroke: #20252b;
+  stroke-width: 3;
+}
+
+.target-marker {
+  fill: none;
+  stroke: #d35d4f;
+  stroke-width: 2;
+}
+
+.target-marker circle {
+  stroke-dasharray: 4 4;
+}
+
+.stage-legend {
+  display: flex;
+  gap: 20px;
+  padding: 14px 2px 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border: 1px solid #20252b;
+  vertical-align: -1px;
+}
+
+.swatch-link {
+  background: #2784b8;
+}
+
+.swatch-joint {
+  background: #f8fafb;
+  border-radius: 50%;
+}
+
+.swatch-target {
+  background: #d35d4f;
+}
+
+.kinematics-controls {
+  padding: 26px;
+  background: #ffffff;
+}
+
+.control-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.control-heading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.status-dot {
+  align-self: flex-start;
+  padding: 4px 7px;
+  color: #236b55;
+  border: 1px solid #8cc4ad;
+  font: 700 0.65rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.control-section {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.control-section h3 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+}
+
+.control-help {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.number-control {
+  display: block;
+  margin: 16px 0;
+  font-size: 0.84rem;
+}
+
+.number-control span {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.number-control b {
+  color: var(--link);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--link);
+}
+
+.readout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.readout-grid div {
+  min-width: 0;
+}
+
+.readout-grid span,
+.target-inputs span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.readout-grid strong {
+  display: block;
+  margin-top: 5px;
+  font: 700 0.95rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.inverse-section {
+  padding-bottom: 18px;
+}
+
+.target-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.target-inputs input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text);
+  background: #fff;
+  font: inherit;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #123f75;
+  border-radius: 0;
+  color: #fff;
+  background: var(--link);
+  font: 700 0.8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  cursor: pointer;
+}
+
+.primary-button:focus-visible,
+.target-inputs input:focus-visible,
+input[type="range"]:focus-visible {
+  outline: 2px solid #f4b740;
+  outline-offset: 2px;
+}
+
+.solve-message {
+  margin: 12px 0 0;
+  color: #236b55;
+  font-size: 0.75rem;
+}
+
+.solve-message.is-error {
+  color: #b4473b;
+}
+
+.model-note {
+  padding-top: 20px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.model-note span {
+  color: var(--text);
+  font: 700 0.65rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.1em;
+}
+
+.model-note p {
+  margin: 5px 0 0;
+}
+
 @media (max-width: 620px) {
   .site-header,
   .site-footer {
@@ -129,5 +420,22 @@ pre code {
 
   nav {
     margin-top: 12px;
+  }
+
+  .kinematics-app {
+    display: block;
+  }
+
+  .arm-stage {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .arm-canvas {
+    min-height: 320px;
+  }
+
+  .kinematics-controls {
+    padding: 20px;
   }
 }
