@@ -5,12 +5,11 @@ title: Journal Directory
 
 # Day 3
 
+## Skills We Learnt
+- [Tkinter](/docs/d3/tkinter.md)
+- [ROS-2](/docs/d3/ROS2.md)
+- [PICO Virtual System](/docs/d3/PICO.md)
+
 ## Developments
-
-Problem found: VR headset configuration is way too long and requires 3 terminal
---> create a GUI 
-
-Limitations of UI:
-- VRUI ROS2 opens on chrome and not on UI locally
-- Command not found on calibration (fixed)
-- New terminal opens on every step
+- [Prototype for EZVR - UI](/docs/d3/EZVR-UI.md)
+- [Applying YOLO to the Teleoperation System](/docs/d3/yolo.md)
