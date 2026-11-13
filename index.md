@@ -25,3 +25,4 @@ This site is the working documentation for the project.
 
 - [Day 1](docs/day1/)
 - [Day 2](docs/day2/)
+- [Day 3](/docs/day3.md)
