@@ -8,6 +8,6 @@ title: Journal Directory
 [Inverse Kinematics](../d2/IK/)
 
 ## Developments
-[Ez-GUI - Finished](../d2/EZ-Gui/)
+[EZ-UI - Draft](../d2/EZ-Gui/)
 
 [ArmLink - Under Development](../d2/ArmLink/)
