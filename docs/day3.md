@@ -11,5 +11,4 @@ title: Journal Directory
 
 ## Developments
 - [Prototype for EZVR - UI](../d3/EZVR-UI/)
-
 - [Visualization for Forward Kinematics & Inverse Kinematics](../d3/IKvisual/)
