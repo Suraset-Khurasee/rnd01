@@ -3,7 +3,7 @@ layout: default
 title: EZ-GUI
 ---
 
-### Project EZ-GUI
+# Project EZ-GUI
 Project EZ-GUI aims to make the robot arm easily runnable without the hassle of terminal input, this includes a tkinter GUI that allows for the robotic arm to operate, making a user-friendly interface with no command hassle!
 
 Preview of the GUI:
