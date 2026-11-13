@@ -6,8 +6,8 @@ title: Journal Directory
 
 ## Skills We Learnt
 [Inverse Kinematics](../d2/IK/)
+[Tkinter](/docs/d3/tkinter.md)
 
 ## Developments
 [EZ-UI - Draft](../d2/EZ-Gui/)
 
-[ArmLink - Under Development](../d2/ArmLink/)
