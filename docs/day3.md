@@ -5,6 +5,8 @@ title: Journal Directory
 
 # Day 3
 
+## Resources
+
 ## Skills We Learnt
 - [ROS-2](../d3/ROS2/)
 - [PICO Virtual System](../d3/PICO/)
