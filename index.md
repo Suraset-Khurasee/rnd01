@@ -19,9 +19,8 @@ title: Home
 
 This site is the working documentation for the project.
 
-## [Ideations](docs/Ideation/)
 
 ## OUR RDP JOURNALS
-
+- [Developments](docs/Ideation/)
 - [Day 1](docs/day1/)
 - [Day 2](docs/day2/)
