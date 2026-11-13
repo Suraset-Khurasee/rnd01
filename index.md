@@ -21,6 +21,7 @@ This site is the working documentation for the project.
 
 
 ## OUR RDP JOURNALS
-- [Developments](docs/Ideation/)
+[Developments](docs/Ideation/)
+
 - [Day 1](docs/day1/)
 - [Day 2](docs/day2/)
