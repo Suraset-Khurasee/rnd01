@@ -13,3 +13,4 @@ title: Journal Directory
 ## Developments
 - [Prototype for EZVR - UI](/docs/d3/EZVR-UI.md)
 - [Applying YOLO to the Teleoperation System](/docs/d3/yolo.md)
+- [Visualization for Forward Kinematics & Inverse Kinematics](/docs/d3/IKvisual.md)
