@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "day2.md",
+                "file": "HOW_TO_SETUP_SINGLEARMRDPNOV2026_ON_OTHER_PC.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "day2"
+              "title": "HOW_TO_SETUP_SINGLEARMRDPNOV2026_ON_OTHER_PC"
             }
           }
         ],
@@ -233,17 +233,20 @@
   },
   "active": "323dbae648ae1b16",
   "lastOpenFiles": [
+    "Ideation.md",
+    "HOW_TO_SETUP_SINGLEARMRDPNOV2026_ON_OTHER_PC.md",
+    "day2.md",
+    "README.md",
+    "day3.md",
+    "d2/IK.md",
+    "d2/EZ-Gui.md",
+    "d2/ArmLink.md",
     "d2/EZ-Gui.md~",
     "docs",
     "docs/d2/IK.md",
     "docs/d2",
     "d2/IK.md~",
     "day2.md~",
-    "day2.md",
-    "day1.md",
-    "Ideation.md",
-    "d2/IK.md",
-    "d2/EZ-Gui.md",
-    "d2/ArmLink.md"
+    "day1.md"
   ]
 }
