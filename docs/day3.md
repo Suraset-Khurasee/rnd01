@@ -5,6 +5,8 @@ title: Journal Directory
 
 # Day 3
 
+## Developments
+
 Problem found: VR headset configuration is way too long and requires 3 terminal
 --> create a GUI 
 
