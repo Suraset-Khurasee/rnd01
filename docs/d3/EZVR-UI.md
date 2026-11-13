@@ -12,3 +12,4 @@ Limitations of UI:
 - VRUI ROS2 opens on chrome and not on UI locally
 - Command not found on calibration (fixed)
 - New terminal opens on every step
+- Cannot train for some reason
