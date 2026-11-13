@@ -7,4 +7,8 @@ title: Data Record for Leader-Follower
 
 TASK: Stack orange cube onto red cubes, 
 
+Method:
+- 40 episodes, Runtime: 30 s, Environment reset: 10s
+
+
 Issues:

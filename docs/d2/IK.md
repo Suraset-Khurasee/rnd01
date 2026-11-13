@@ -21,27 +21,6 @@ transformations gives the pose of the end effector:
 Here, `q_i` is the angle or displacement of joint `i`, and `A_i` is the
 transformation from one link frame to the next.
 
-## Denavit-Hartenberg configuration
-
-The Denavit-Hartenberg (DH) convention describes each link using four
-parameters:
-
-| Parameter | Meaning |
-| --- | --- |
-| `a_i` | Link length along the x-axis |
-| `alpha_i` | Link twist about the x-axis |
-| `d_i` | Link offset along the z-axis |
-| `theta_i` | Joint angle about the z-axis |
-
-Using the standard DH convention, one link transformation is:
-
-`A_i = Rot(z, theta_i) Trans(z, d_i) Trans(x, a_i) Rot(x, alpha_i)`
-
-Before solving IK, the DH table must match the physical robot. The joint axes
-should be measured consistently, the zero-angle position should match the
-controller, and the units should be kept consistent. For a revolute joint,
-`theta_i` normally changes with the joint angle while `d_i` remains fixed.
-
 ## Practical IK workflow
 
 1. Define the desired end-effector pose in the robot base frame.
