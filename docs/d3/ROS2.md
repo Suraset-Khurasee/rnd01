@@ -29,6 +29,6 @@ Rather than developing an entire application from scratch, developers build upon
 The fundamental principle of ROS 2 is to divide complex robotic applications into independent components and provide standardised mechanisms for those components to communicate and coordinate.
 
 Reference :
-[1](https://docs.ros.org/en/lyrical/index.html) 
+[[1] https://docs.ros.org/en/lyrical/index.html](https://docs.ros.org/en/lyrical/index.html)
 [2](https://repo.test.ros2.org/en/kilted/Concepts/Basic.html)
 [3](https://husarion.com/tutorials/ros2-tutorials/1-ros2-introduction/)
