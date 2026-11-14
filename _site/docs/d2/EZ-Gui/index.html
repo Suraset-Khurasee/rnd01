@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EZ-GUI · CE-0169 Documentation</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">CE-0169 Documentation</a>
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/docs/">Documents</a>
+        <a href="/docs/d2/structure/">Arm Structure</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      <h1 id="project-ez-gui">Project EZ-GUI</h1>
+<p>Project EZ-GUI aims to make the robot arm easily runnable without the hassle of terminal input, this includes a tkinter GUI that allows for the robotic arm to operate, making a user-friendly interface with no command hassle!</p>
+
+<h1 id="analysis-of-the-code">Analysis Of The Code</h1>
+
+<p>The code utilizes Tkinter which is a python-based GUI Allowing an intuitive connection of the user with the terminal, buttons will run commands that are prefixed which is mostly constant as per every robot start session. When there are variables to modify, eg. passwords/Pathfiles we have a textbox which is utilized as per every step.</p>
+
+<p>Step 1 : constant command, nothing important except sudo password (textbox in)i
+Step 2 : Teleoperation, constant command with 2 options : Teleop w and w/o cameras with differing commands.
+Step 3 : Recording of Data. Here, we can utilize a proper text box, where we use the task name and file storage to sort and oragnize case specific files, with messageboxes of Reset time/ Ep time/ Num Ep Fps / Speed.
+Steos 4, 5, 6: works as a simple text box just like 1 2 and 3 and is easily accesible to the user, using same tkinter framework. 
+Preview of the GUI:
+<img src="/images/ezgui.jpg?v=1" alt="Preview of gui" /></p>
+
+<p>Errors and limitations:</p>
+<ul>
+  <li>Process stop button doesnt close the app that logs the joints’ activities</li>
+  <li>When the arm has an error (and It usually does) the user would have to manually go to chrome, admin and then do the admin pasword, stop arm, clear errors, start arm. We can’t really fix that as it is external from the computer, so USER BEWARE. (actually dont need to when you turn on teleoperation mode, the arm automatically turns on)</li>
+  <li>CAN socket when connected shows “UP” although the robot’s power is off. Can be changed to “DOWN” if offline</li>
+  <li>When improperly closing the GUI the program infinitely runs on autonomous rollout.</li>
+</ul>
+
+    </main>
+    <footer class="site-footer">
+      <span>CE-0169 Documentation</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>

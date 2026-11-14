@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AgileX Nero: Setup &amp; Removal Guide for singlearmRDPNov2026 (Ubuntu 22.04 &amp; Ubuntu 24.04) · CE-0169 Documentation</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">CE-0169 Documentation</a>
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/docs/">Documents</a>
+        <a href="/docs/d2/structure/">Arm Structure</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      <h1 id="agilex-nero-setup--removal-guide-for-singlearmrdpnov2026-ubuntu-2204--ubuntu-2404">AgileX Nero: Setup &amp; Removal Guide for <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> (Ubuntu 22.04 &amp; Ubuntu 24.04)</h1>
+
+<p>This guide provides end-to-end instructions to transfer, configure, run, and cleanly remove the <strong><code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code></strong> teleoperation and imitation learning project on another computer running either <strong>Ubuntu 22.04 LTS (Jammy Jellyfish)</strong> or <strong>Ubuntu 24.04 LTS (Noble Numbat)</strong>.</p>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#1-system-architecture--os-comparison">System Architecture &amp; OS Comparison</a></li>
+  <li><a href="#2-what-to-transfer-vs-what-to-reinstall">What to Transfer vs. What to Reinstall</a></li>
+  <li><a href="#phase-1-package-files-on-current-pc">Phase 1: Package Files on Current PC</a></li>
+  <li><a href="#phase-2-system--hardware-driver-setup-ubuntu-2204-vs-2404">Phase 2: System &amp; Hardware Driver Setup (Ubuntu 22.04 vs. 24.04)</a></li>
+  <li><a href="#phase-3-install-conda-miniforge--environment">Phase 3: Install Conda (Miniforge) &amp; Environment</a></li>
+  <li><a href="#phase-4-install-pytorch-lerobot-and-core-dependencies">Phase 4: Install PyTorch, LeRobot, and Core Dependencies</a></li>
+  <li><a href="#phase-5-extract-and-link-singlearmrdpnov2026-plugins">Phase 5: Extract and Link <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> Plugins</a></li>
+  <li><a href="#phase-6-hardware-bringup--verification">Phase 6: Hardware Bringup &amp; Verification</a></li>
+  <li><a href="#phase-7-running-teleoperation-recording--rollout">Phase 7: Running Teleoperation, Recording &amp; Rollout</a></li>
+  <li><a href="#10-how-to-completely--cleanly-remove-the-project">How to Completely &amp; Cleanly Remove the Project</a></li>
+  <li><a href="#11-troubleshooting--os-specific-gotchas">Troubleshooting &amp; OS-Specific Gotchas</a></li>
+</ol>
+
+<hr />
+
+<h2 id="1-system-architecture--os-comparison">1. System Architecture &amp; OS Comparison</h2>
+
+<p>The <strong><code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code></strong> project runs on <strong>Python 3.12, Hugging Face LeRobot, Linux SocketCAN, and pyrealsense2</strong> inside an isolated Conda environment.</p>
+
+<blockquote>
+  <p>[!NOTE]
+<strong>ROS 2 is NOT required on either OS!</strong>
+<code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> communicates with the physical AgileX Nero arm directly over kernel SocketCAN (<code class="language-plaintext highlighter-rouge">can0</code> / <code class="language-plaintext highlighter-rouge">can1</code>) and streams camera frames via <code class="language-plaintext highlighter-rouge">pyrealsense2</code>. You do not need to install ROS 2 Humble or ROS 2 Jazzy on the other computer.</p>
+</blockquote>
+
+<h3 id="os-differences-ubuntu-2204-vs-ubuntu-2404">OS Differences: Ubuntu 22.04 vs. Ubuntu 24.04</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Ubuntu 22.04 LTS (Jammy)</th>
+      <th>Ubuntu 24.04 LTS (Noble)</th>
+      <th>Impact &amp; Action Needed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Linux Kernel</strong></td>
+      <td>5.15 / 6.5 / 6.8 HWE</td>
+      <td>6.8+ (or 6.11)</td>
+      <td>Kernel 6.8+ requires official Intel udev rules, otherwise RealSense USB streaming throws <code class="language-plaintext highlighter-rouge">Access Denied</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>System Python</strong></td>
+      <td>Python 3.10</td>
+      <td>Python 3.12 (PEP 668)</td>
+      <td>Ubuntu 24.04 blocks global <code class="language-plaintext highlighter-rouge">pip install</code> (<code class="language-plaintext highlighter-rouge">EXTERNALLY-MANAGED</code>). Using Conda completely solves this.</td>
+    </tr>
+    <tr>
+      <td><strong>Window System</strong></td>
+      <td>X11 (default)</td>
+      <td>Wayland or X11</td>
+      <td>Rerun 3D visualizer requires setting <code class="language-plaintext highlighter-rouge">export DISPLAY=:0</code> or <code class="language-plaintext highlighter-rouge">export DISPLAY=:1</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>SocketCAN</strong></td>
+      <td>Supported natively</td>
+      <td>Supported natively</td>
+      <td>Both require <code class="language-plaintext highlighter-rouge">sudo apt install can-utils</code> and loading <code class="language-plaintext highlighter-rouge">can</code>/<code class="language-plaintext highlighter-rouge">can_raw</code> kernel modules.</td>
+    </tr>
+    <tr>
+      <td><strong>PyTorch &amp; CUDA</strong></td>
+      <td>Supported</td>
+      <td>Supported</td>
+      <td>Install PyTorch wheel compiled for CUDA 12.4+ (or CPU fallback).</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="2-what-to-transfer-vs-what-to-reinstall">2. What to Transfer vs. What to Reinstall</h2>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────────────────────────────────────────┐     ┌──────────────────────────────────────────────┐
+│  TRANSFER FROM CURRENT PC (Via USB / SCP)    │     │  DO NOT COPY DIRECTLY (REINSTALL ON NEW PC)  │
+├──────────────────────────────────────────────┤     ├──────────────────────────────────────────────┤
+│ 1. singlearmRDPNov2026 folder:               │     │ 1. The /home/sc1/miniforge3 conda folder     │
+│    - lerobot_robot_agilex_nero_RDP/          │     │    (Contains hardcoded paths and shebangs    │
+│    - lerobot_teleoperator_agilex_nero_leader │     │    pointing to /home/sc1/...).               │
+│    - assets/ (CAD STL meshes &amp; URDF)         │     │ 2. Compiled .egg-info or build/ folders.     │
+│    - HOW_TO_RUN.md execution guide           │     │ 3. Linux kernel module binaries.             │
+│    - (Optional) datasets/ for past demos     │     │                                              │
+└──────────────────────────────────────────────┘     └──────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-phase-1-package-files-on-current-pc">3. Phase 1: Package Files on Current PC</h2>
+
+<p>On this desktop, open a terminal and compress <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> into a clean archive:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/Desktop/RDPJon/JonFiles
+
+<span class="c"># Compress singlearmRDPNov2026 excluding caches and heavy output weights</span>
+<span class="nb">tar</span> <span class="nt">--exclude</span><span class="o">=</span><span class="s1">'outputs/*'</span> <span class="se">\</span>
+    <span class="nt">--exclude</span><span class="o">=</span><span class="s1">'__pycache__'</span> <span class="se">\</span>
+    <span class="nt">--exclude</span><span class="o">=</span><span class="s1">'*.pyc'</span> <span class="se">\</span>
+    <span class="nt">--exclude</span><span class="o">=</span><span class="s1">'build'</span> <span class="se">\</span>
+    <span class="nt">--exclude</span><span class="o">=</span><span class="s1">'*.egg-info'</span> <span class="se">\</span>
+    <span class="nt">-czvf</span> ~/Desktop/singlearmRDPNov2026_backup.tar.gz singlearmRDPNov2026
+</code></pre></div></div>
+
+<h3 id="transfer-the-archive-to-the-target-pc">Transfer the Archive to the Target PC</h3>
+<ul>
+  <li><strong>Option A: USB Thumb Drive:</strong> Copy <code class="language-plaintext highlighter-rouge">~/Desktop/singlearmRDPNov2026_backup.tar.gz</code> to your external drive.</li>
+  <li><strong>Option B: Local Network (SCP):</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp ~/Desktop/singlearmRDPNov2026_backup.tar.gz &lt;target_username&gt;@&lt;target_ip&gt;:~/
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="4-phase-2-system--hardware-driver-setup-ubuntu-2204-vs-2404">4. Phase 2: System &amp; Hardware Driver Setup (Ubuntu 22.04 vs. 24.04)</h2>
+
+<p>Open a terminal on the <strong>target computer</strong> (applies to both Ubuntu 22.04 and 24.04):</p>
+
+<h3 id="step-21-install-system-build-tools--socketcan">Step 2.1: Install System Build Tools &amp; SocketCAN</h3>
+<ul>
+  <li><strong>Purpose:</strong> Provides GCC/G++ compilers, header files, and Linux CAN utilities (<code class="language-plaintext highlighter-rouge">candump</code>, <code class="language-plaintext highlighter-rouge">cansend</code>, <code class="language-plaintext highlighter-rouge">ip link</code>).</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> build-essential git curl can-utils net-tools libusb-1.0-0-dev
+</code></pre></div></div>
+
+<h3 id="step-22-configure-user-usb-permissions">Step 2.2: Configure User USB Permissions</h3>
+<ul>
+  <li><strong>Purpose:</strong> Grants your user permission to access USB-to-CAN serial converters and Intel RealSense cameras without requiring <code class="language-plaintext highlighter-rouge">sudo</code> for every command.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Add current user to dialout and plugdev groups</span>
+<span class="nb">sudo </span>usermod <span class="nt">-a</span> <span class="nt">-G</span> dialout,plugdev <span class="nv">$USER</span>
+</code></pre></div></div>
+
+<h3 id="step-23-install-official-intel-realsense-udev-rules-critical">Step 2.3: Install Official Intel RealSense udev Rules (CRITICAL)</h3>
+<ul>
+  <li><strong>Purpose:</strong> Kernel 6.8+ (standard on Ubuntu 24.04 and Ubuntu 22.04 HWE) strictly enforces USB endpoint permissions. Without these rules, <code class="language-plaintext highlighter-rouge">pyrealsense2</code> fails with <code class="language-plaintext highlighter-rouge">failed to set power state</code> or <code class="language-plaintext highlighter-rouge">Access Denied</code>.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/udev/rules.d
+<span class="nb">sudo </span>curl <span class="nt">-sSL</span> https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules <span class="se">\</span>
+  <span class="nt">-o</span> /etc/udev/rules.d/99-realsense-libusb.rules
+
+<span class="c"># Reload rules and trigger subsystem</span>
+<span class="nb">sudo </span>udevadm control <span class="nt">--reload-rules</span> <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>udevadm trigger
+</code></pre></div></div>
+
+<h3 id="step-24-enable-socketcan-kernel-modules">Step 2.4: Enable SocketCAN Kernel Modules</h3>
+<ul>
+  <li><strong>Purpose:</strong> Loads the Linux networking stack modules for CAN communication.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>modprobe can
+<span class="nb">sudo </span>modprobe can_raw
+
+<span class="c"># Ensure CAN modules load automatically on every system boot:</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"can</span><span class="se">\n</span><span class="s2">can_raw"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/modules
+</code></pre></div></div>
+
+<blockquote>
+  <p>[!IMPORTANT]
+<strong>Log out and log back in</strong> (or reboot) now so the new group permissions (<code class="language-plaintext highlighter-rouge">dialout</code>, <code class="language-plaintext highlighter-rouge">plugdev</code>) take effect.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="5-phase-3-install-conda-miniforge--environment">5. Phase 3: Install Conda (Miniforge) &amp; Environment</h2>
+
+<p>On the <strong>target computer</strong>:</p>
+
+<h3 id="step-31-install-miniforge">Step 3.1: Install Miniforge</h3>
+<ul>
+  <li><strong>Purpose:</strong> Provides a lightweight, isolated Conda package manager without Anaconda bloat. Bypasses Ubuntu 24.04’s PEP 668 <code class="language-plaintext highlighter-rouge">EXTERNALLY-MANAGED</code> restrictions.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-L</span> <span class="nt">-O</span> <span class="s2">"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"</span>
+bash Miniforge3-Linux-x86_64.sh <span class="nt">-b</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/miniforge3
+
+<span class="c"># Initialize Conda for Bash</span>
+<span class="nv">$HOME</span>/miniforge3/bin/conda init bash
+<span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<h3 id="step-32-create-the-isolated-conda-environment">Step 3.2: Create the Isolated Conda Environment</h3>
+<ul>
+  <li><strong>Purpose:</strong> Creates a dedicated Python 3.12 environment specifically for <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code>.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create <span class="nt">-y</span> <span class="nt">-n</span> nero-singlearmRDPNov2026 <span class="nv">python</span><span class="o">=</span>3.12
+conda activate nero-singlearmRDPNov2026
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="6-phase-4-install-pytorch-lerobot-and-core-dependencies">6. Phase 4: Install PyTorch, LeRobot, and Core Dependencies</h2>
+
+<p>With <code class="language-plaintext highlighter-rouge">nero-singlearmRDPNov2026</code> active on the <strong>target computer</strong>:</p>
+
+<h3 id="step-41-install-pytorch">Step 4.1: Install PyTorch</h3>
+<ul>
+  <li><strong>If the target computer has an NVIDIA GPU (RTX 30/40/50 series):</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch torchvision <span class="nt">--index-url</span> https://download.pytorch.org/whl/cu124
+</code></pre></div>    </div>
+  </li>
+  <li><strong>If the target computer has no dedicated GPU (CPU only):</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch torchvision <span class="nt">--index-url</span> https://download.pytorch.org/whl/cpu
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="step-42-clone-and-install-the-lerobot-engine">Step 4.2: Clone and Install the LeRobot Engine</h3>
+<ul>
+  <li><strong>Purpose:</strong> Installs Hugging Face’s official LeRobot robotics repository with Intel RealSense support.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~
+git clone https://github.com/huggingface/lerobot.git
+<span class="nb">cd</span> ~/lerobot
+pip <span class="nb">install</span> <span class="nt">-e</span> <span class="s2">".[intelrealsense]"</span>
+</code></pre></div></div>
+
+<h3 id="step-43-install-camera-can-and-visualization-libraries">Step 4.3: Install Camera, CAN, and Visualization Libraries</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pyrealsense2 python-can rerun-sdk pynput
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="7-phase-5-extract-and-link-singlearmrdpnov2026-plugins">7. Phase 5: Extract and Link <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> Plugins</h2>
+
+<h3 id="step-51-extract-archive-to-target-workspace">Step 5.1: Extract Archive to Target Workspace</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create target project folder (adjust path to your preference, e.g. in JonFiles or Desktop)</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/Desktop/RDPJon/JonFiles
+<span class="nb">cd</span> ~/Desktop/RDPJon/JonFiles
+
+<span class="c"># Extract the archive (assuming singlearmRDPNov2026_backup.tar.gz is in ~/)</span>
+<span class="nb">tar</span> <span class="nt">-xzvf</span> ~/singlearmRDPNov2026_backup.tar.gz
+<span class="nb">cd </span>singlearmRDPNov2026
+</code></pre></div></div>
+
+<h3 id="step-52-install-agilex-nero-robot--teleoperator-plugins-in-editable-mode">Step 5.2: Install AgileX Nero Robot &amp; Teleoperator Plugins in Editable Mode</h3>
+<ul>
+  <li><strong>Purpose:</strong> Registers <code class="language-plaintext highlighter-rouge">lerobot_robot_agilex_nero</code> and <code class="language-plaintext highlighter-rouge">lerobot_teleoperator_agilex_nero_leader</code> into the <code class="language-plaintext highlighter-rouge">nero-singlearmRDPNov2026</code> Python registry.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda activate nero-singlearmRDPNov2026
+<span class="nb">cd</span> ~/Desktop/RDPJon/JonFiles/singlearmRDPNov2026
+
+pip <span class="nb">install</span> <span class="nt">-e</span> ./lerobot_robot_agilex_nero_RDP
+pip <span class="nb">install</span> <span class="nt">-e</span> ./lerobot_teleoperator_agilex_nero_leader_RDP
+</code></pre></div></div>
+
+<h3 id="step-53-verify-installation">Step 5.3: Verify Installation</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip list | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"agilex|lerobot|pyagxarm"</span>
+</code></pre></div></div>
+<ul>
+  <li><strong>Expected Output:</strong>
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lerobot                                 0.6.1   /home/&lt;user&gt;/lerobot
+lerobot_robot_agilex_nero               0.1.0   /home/&lt;user&gt;/Desktop/.../singlearmRDPNov2026/lerobot_robot_agilex_nero_RDP
+lerobot_teleoperator_agilex_nero_leader 0.1.0   /home/&lt;user&gt;/Desktop/.../singlearmRDPNov2026/lerobot_teleoperator_agilex_nero_leader_RDP
+pyAgxArm                                1.0.0
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="8-phase-6-hardware-bringup--verification">8. Phase 6: Hardware Bringup &amp; Verification</h2>
+
+<h3 id="step-61-bring-up-dual-can-bus-interfaces-1-mbps">Step 6.1: Bring Up Dual CAN Bus Interfaces (1 Mbps)</h3>
+<p>Connect the two USB-to-CAN adapters to the target computer:</p>
+<ul>
+  <li>Follower arm adapter $\rightarrow$ <code class="language-plaintext highlighter-rouge">can0</code></li>
+  <li>Leader master arm adapter $\rightarrow$ <code class="language-plaintext highlighter-rouge">can1</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>iface <span class="k">in </span>can0 can1<span class="p">;</span> <span class="k">do
+  </span><span class="nb">sudo </span>ip <span class="nb">link set</span> <span class="s2">"</span><span class="nv">$iface</span><span class="s2">"</span> down 2&gt;/dev/null
+  <span class="nb">sudo </span>ip <span class="nb">link set</span> <span class="s2">"</span><span class="nv">$iface</span><span class="s2">"</span> <span class="nb">type </span>can bitrate 1000000
+  <span class="nb">sudo </span>ip <span class="nb">link set</span> <span class="s2">"</span><span class="nv">$iface</span><span class="s2">"</span> up
+<span class="k">done</span>
+
+<span class="c"># Check that both interfaces display state UP:</span>
+ip <span class="nt">-details</span> <span class="nb">link </span>show can0
+ip <span class="nt">-details</span> <span class="nb">link </span>show can1
+</code></pre></div></div>
+
+<h4 id="test-can-traffic">Test CAN Traffic:</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check follower communication:</span>
+candump can0
+
+<span class="c"># Check leader communication (move the leader arm by hand to see traffic):</span>
+candump can1
+</code></pre></div></div>
+<p><em>(Press <code class="language-plaintext highlighter-rouge">Ctrl+C</code> to exit candump).</em></p>
+
+<hr />
+
+<h3 id="step-62-intel-realsense-camera-detection">Step 6.2: Intel RealSense Camera Detection</h3>
+<p>Plug in both Intel RealSense cameras to high-speed <strong>USB 3.0 ports (blue ports)</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda activate nero-singlearmRDPNov2026
+lerobot-find-cameras realsense
+</code></pre></div></div>
+
+<blockquote>
+  <p>[!IMPORTANT]
+<strong>Check Camera Serial Numbers:</strong></p>
+  <ul>
+    <li>If you are using the <strong>same physical cameras</strong> transferred from the original rig:
+      <ul>
+        <li>Front Camera (D435): <code class="language-plaintext highlighter-rouge">261322076493</code></li>
+        <li>Wrist Camera (D405): <code class="language-plaintext highlighter-rouge">260422274592</code></li>
+      </ul>
+    </li>
+    <li>If the target computer is using <strong>different physical cameras</strong>, note the serial numbers printed by <code class="language-plaintext highlighter-rouge">lerobot-find-cameras</code> and replace them in your commands below!</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<h2 id="9-phase-7-running-teleoperation-recording--rollout">9. Phase 7: Running Teleoperation, Recording &amp; Rollout</h2>
+
+<p>In <strong>every new terminal</strong> opened on the target computer:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">unset </span>PYTHONPATH
+conda activate nero-singlearmRDPNov2026
+<span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$CONDA_PREFIX</span><span class="s2">/lib:</span><span class="nv">$LD_LIBRARY_PATH</span><span class="s2">"</span>
+
+<span class="c"># Set X11 display session (use echo $DISPLAY to verify if :0 or :1)</span>
+<span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:0
+
+<span class="nb">cd</span> ~/Desktop/RDPJon/JonFiles/singlearmRDPNov2026
+</code></pre></div></div>
+
+<h3 id="a-teleoperate-with-realsense-cameras--live-3d-rerun-dashboard">A. Teleoperate with RealSense Cameras &amp; Live 3D Rerun Dashboard</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lerobot-teleoperate <span class="se">\</span>
+  <span class="nt">--robot</span>.type<span class="o">=</span>agilex_nero <span class="se">\</span>
+  <span class="nt">--robot</span>.can_interface<span class="o">=</span>socketcan <span class="se">\</span>
+  <span class="nt">--robot</span>.can_channel<span class="o">=</span>can0 <span class="se">\</span>
+  <span class="nt">--robot</span>.firmware<span class="o">=</span>v120 <span class="se">\</span>
+  <span class="nt">--robot</span>.speed_percent<span class="o">=</span>20 <span class="se">\</span>
+  <span class="nt">--robot</span>.action_mode<span class="o">=</span>move_js <span class="se">\</span>
+  <span class="nt">--robot</span>.estop_key<span class="o">=</span>esc <span class="se">\</span>
+  <span class="nt">--robot</span>.cameras<span class="o">=</span><span class="s1">'{front: {type: intelrealsense, serial_number_or_name: "261322076493", width: 640, height: 480, fps: 30}, wrist: {type: intelrealsense, serial_number_or_name: "260422274592", width: 640, height: 480, fps: 30}}'</span> <span class="se">\</span>
+  <span class="nt">--teleop</span>.type<span class="o">=</span>agilex_nero_leader <span class="se">\</span>
+  <span class="nt">--teleop</span>.can_interface<span class="o">=</span>socketcan <span class="se">\</span>
+  <span class="nt">--teleop</span>.can_channel<span class="o">=</span>can1 <span class="se">\</span>
+  <span class="nt">--teleop</span>.firmware<span class="o">=</span>v120 <span class="se">\</span>
+  <span class="nt">--teleop</span>.read_timeout_s<span class="o">=</span>5.0 <span class="se">\</span>
+  <span class="nt">--teleop</span>.mode_switch_settle_s<span class="o">=</span>1.0 <span class="se">\</span>
+  <span class="nt">--display_data</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<h3 id="b-record-demonstrations">B. Record Demonstrations</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lerobot-record <span class="se">\</span>
+  <span class="nt">--robot</span>.type<span class="o">=</span>agilex_nero <span class="se">\</span>
+  <span class="nt">--robot</span>.can_interface<span class="o">=</span>socketcan <span class="se">\</span>
+  <span class="nt">--robot</span>.can_channel<span class="o">=</span>can0 <span class="se">\</span>
+  <span class="nt">--robot</span>.cameras<span class="o">=</span><span class="s1">'{front: {type: intelrealsense, serial_number_or_name: "261322076493", width: 640, height: 480, fps: 30}, wrist: {type: intelrealsense, serial_number_or_name: "260422274592", width: 640, height: 480, fps: 30}}'</span> <span class="se">\</span>
+  <span class="nt">--teleop</span>.type<span class="o">=</span>agilex_nero_leader <span class="se">\</span>
+  <span class="nt">--teleop</span>.can_channel<span class="o">=</span>can1 <span class="se">\</span>
+  <span class="nt">--repo_id</span><span class="o">=</span><span class="nb">local</span>/nero_pick_nov2026 <span class="se">\</span>
+  <span class="nt">--root</span><span class="o">=</span>/home/<span class="nv">$USER</span>/Desktop/RDPJon/JonFiles/singlearmRDPNov2026/datasets/nero_pick_nov2026 <span class="se">\</span>
+  <span class="nt">--num_episodes</span><span class="o">=</span>10 <span class="se">\</span>
+  <span class="nt">--task</span><span class="o">=</span><span class="s2">"Pick up the red cube and place it in the container"</span>
+</code></pre></div></div>
+
+<h3 id="c-deploy-trained-policy-rollout">C. Deploy Trained Policy (Rollout)</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lerobot-rollout <span class="se">\</span>
+  <span class="nt">--strategy</span>.type<span class="o">=</span>base <span class="se">\</span>
+  <span class="nt">--policy</span>.path<span class="o">=</span>/home/<span class="nv">$USER</span>/Desktop/RDPJon/JonFiles/singlearmRDPNov2026/outputs/train/act_nero_pick_cube/checkpoints/last/pretrained_model <span class="se">\</span>
+  <span class="nt">--robot</span>.type<span class="o">=</span>agilex_nero <span class="se">\</span>
+  <span class="nt">--robot</span>.can_interface<span class="o">=</span>socketcan <span class="se">\</span>
+  <span class="nt">--robot</span>.can_channel<span class="o">=</span>can0 <span class="se">\</span>
+  <span class="nt">--robot</span>.firmware<span class="o">=</span>v120 <span class="se">\</span>
+  <span class="nt">--robot</span>.speed_percent<span class="o">=</span>20 <span class="se">\</span>
+  <span class="nt">--robot</span>.action_mode<span class="o">=</span>move_js <span class="se">\</span>
+  <span class="nt">--robot</span>.estop_key<span class="o">=</span>esc <span class="se">\</span>
+  <span class="nt">--robot</span>.home_position_tol_rad<span class="o">=</span>0.05 <span class="se">\</span>
+  <span class="nt">--robot</span>.cameras<span class="o">=</span><span class="s1">'{front: {type: intelrealsense, serial_number_or_name: "261322076493", width: 640, height: 480, fps: 30}, wrist: {type: intelrealsense, serial_number_or_name: "260422274592", width: 640, height: 480, fps: 30}}'</span> <span class="se">\</span>
+  <span class="nt">--task</span><span class="o">=</span><span class="s2">"Pick up the red cube and place it in the container"</span> <span class="se">\</span>
+  <span class="nt">--duration</span><span class="o">=</span>30 <span class="se">\</span>
+  <span class="nt">--display_data</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="10-how-to-completely--cleanly-remove-the-project">10. How to Completely &amp; Cleanly Remove the Project</h2>
+
+<p>When you no longer need <code class="language-plaintext highlighter-rouge">singlearmRDPNov2026</code> on the computer and want to remove it completely without leaving orphan files:</p>
+
+<h3 id="step-1-deactivate-the-conda-environment">Step 1: Deactivate the Conda Environment</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda deactivate
+</code></pre></div></div>
+
+<h3 id="step-2-delete-the-conda-environment">Step 2: Delete the Conda Environment</h3>
+<ul>
+  <li><strong>Purpose:</strong> Removes all cloned binaries, Python packages, and LeRobot plugin links.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda <span class="nb">env </span>remove <span class="nt">-n</span> nero-singlearmRDPNov2026 <span class="nt">-y</span>
+</code></pre></div></div>
+
+<h3 id="step-3-delete-the-project-workspace-folder">Step 3: Delete the Project Workspace Folder</h3>
+<ul>
+  <li><strong>Purpose:</strong> Deletes the code, CAD assets, datasets, and training checkpoints from disk.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-rf</span> ~/Desktop/RDPJon/JonFiles/singlearmRDPNov2026
+</code></pre></div></div>
+
+<h3 id="step-4-optional-remove-core-lerobot-clone-if-no-longer-needed">Step 4 (Optional): Remove Core LeRobot Clone if No Longer Needed</h3>
+<p>If this computer will no longer run any LeRobot robotics projects:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-rf</span> ~/lerobot
+</code></pre></div></div>
+
+<h3 id="step-5-verification-of-clean-removal">Step 5: Verification of Clean Removal</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Verify Conda environment is deleted:</span>
+conda <span class="nb">env </span>list | <span class="nb">grep </span>nero-singlearmRDPNov2026
+<span class="c"># (Returns nothing)</span>
+
+<span class="c"># Verify project directory is deleted:</span>
+<span class="nb">ls</span> <span class="nt">-d</span> ~/Desktop/RDPJon/JonFiles/singlearmRDPNov2026
+<span class="c"># (Returns: No such file or directory)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="11-troubleshooting--os-specific-gotchas">11. Troubleshooting &amp; OS-Specific Gotchas</h2>
+
+<h3 id="1-can0-interface-down-or-cannot-find-device-can0">1. <code class="language-plaintext highlighter-rouge">can0: interface down</code> or <code class="language-plaintext highlighter-rouge">Cannot find device "can0"</code></h3>
+<ul>
+  <li><strong>Cause:</strong> USB adapter unplugged, or kernel modules not loaded.</li>
+  <li><strong>Fix:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>modprobe can <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>modprobe can_raw
+<span class="k">for </span>iface <span class="k">in </span>can0 can1<span class="p">;</span> <span class="k">do
+  </span><span class="nb">sudo </span>ip <span class="nb">link set</span> <span class="s2">"</span><span class="nv">$iface</span><span class="s2">"</span> <span class="nb">type </span>can bitrate 1000000
+  <span class="nb">sudo </span>ip <span class="nb">link set</span> <span class="s2">"</span><span class="nv">$iface</span><span class="s2">"</span> up
+<span class="k">done</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="2-realsense-camera-access-denied-or-failed-to-set-power-state-especially-on-ubuntu-2404">2. RealSense Camera <code class="language-plaintext highlighter-rouge">Access Denied</code> or <code class="language-plaintext highlighter-rouge">failed to set power state</code> (Especially on Ubuntu 24.04)</h3>
+<ul>
+  <li><strong>Cause:</strong> Missing udev rules or user not in the <code class="language-plaintext highlighter-rouge">plugdev</code> group.</li>
+  <li><strong>Fix:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>curl <span class="nt">-sSL</span> https://raw.githubusercontent.com/IntelRealSense/librealsense/master/config/99-realsense-libusb.rules <span class="se">\</span>
+  <span class="nt">-o</span> /etc/udev/rules.d/99-realsense-libusb.rules
+<span class="nb">sudo </span>udevadm control <span class="nt">--reload-rules</span> <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>udevadm trigger
+<span class="nb">sudo </span>usermod <span class="nt">-a</span> <span class="nt">-G</span> dialout,plugdev <span class="nv">$USER</span>
+</code></pre></div>    </div>
+    <p>Unplug and replug the cameras into USB 3.0 ports.</p>
+  </li>
+</ul>
+
+<h3 id="3-rerun-3d-visualizer-window-error-unable-to-open-display">3. Rerun 3D Visualizer Window Error (<code class="language-plaintext highlighter-rouge">Unable to open display</code>)</h3>
+<ul>
+  <li><strong>Cause:</strong> Mismatched X11 / Wayland display session.</li>
+  <li><strong>Fix:</strong> Check your display ID:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nv">$DISPLAY</span>
+</code></pre></div>    </div>
+    <p>Set <code class="language-plaintext highlighter-rouge">export DISPLAY=:0</code> (most laptops) or <code class="language-plaintext highlighter-rouge">export DISPLAY=:1</code> to match the output.</p>
+  </li>
+</ul>
+
+<h3 id="4-modulenotfounderror-no-module-named-lerobot">4. <code class="language-plaintext highlighter-rouge">ModuleNotFoundError: No module named 'lerobot'</code></h3>
+<ul>
+  <li><strong>Cause:</strong> Conda environment was not activated or system Python was invoked.</li>
+  <li><strong>Fix:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">unset </span>PYTHONPATH
+conda activate nero-singlearmRDPNov2026
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="5-ubuntu-2404-wayland-issue-with-rerun--opencv">5. Ubuntu 24.04 Wayland Issue with Rerun / OpenCV</h3>
+<ul>
+  <li><strong>Cause:</strong> Some Wayland compositors on Ubuntu 24.04 cause OpenGL GUI flickers.</li>
+  <li><strong>Fix:</strong> Force X11 backend for Qt / Rerun by adding:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">QT_QPA_PLATFORM</span><span class="o">=</span>xcb
+<span class="nb">export </span><span class="nv">GDK_BACKEND</span><span class="o">=</span>x11
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+    </main>
+    <footer class="site-footer">
+      <span>CE-0169 Documentation</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>

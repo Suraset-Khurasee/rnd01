@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nero Robotic Arm Documentation · CE-0169 Documentation</title>
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">CE-0169 Documentation</a>
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/docs/">Documents</a>
+        <a href="/docs/d2/structure/">Arm Structure</a>
+        <a href="https://github.com/Suraset-Khurasee/rnd01">GitHub</a>
+      </nav>
+    </header>
+    <main class="content">
+      <h1 id="nero-robotic-arm-functional-and-teleoperation-takeaways">Nero Robotic Arm: Functional and Teleoperation Takeaways</h1>
+
+<p>Source: <strong>AGILE X 7-DoF Nero Robotic Arm User Manual, V1.0.0</strong> (<code class="language-plaintext highlighter-rouge">NeDoc.pdf</code>).</p>
+
+<h2 id="1-functional-capabilities">1. Functional capabilities</h2>
+
+<ul>
+  <li><strong>7-DoF motion:</strong> The arm provides seven joints, a 580 mm working radius, ±0.1 mm repeat-positioning accuracy, and a rated payload of 3 kg. The manual positions it for research, education, assembly, handling, laboratory automation, and embodied-intelligence data collection.</li>
+  <li><strong>Control interfaces:</strong> Supported communication methods are CAN, HTTP, and TCP. The documented control methods are drag teaching, offline trajectories, API control, and host-computer/web software.</li>
+  <li><strong>Motion primitives in the web UI:</strong> Point-to-point Cartesian motion, circular motion through three points, joint-angle commands, linear Cartesian motion, and low-level MIT joint control. Cartesian commands use position/orientation values <code class="language-plaintext highlighter-rouge">(x, y, z, rx, ry, rz)</code>.</li>
+  <li><strong>Trajectory execution:</strong> Trajectories are composed of multiple motion points and can be created, stored, imported, exported, refreshed, and executed. This is the main route for repeatable autonomous behavior after a motion has been taught or planned.</li>
+  <li><strong>Configuration needed for accurate behavior:</strong> Calibrate joint zero positions, set the physical mounting orientation, configure the end-effector mass/center of gravity/dimensions, and apply joint limits plus end-effector speed/acceleration limits.</li>
+  <li><strong>Safety response:</strong> Collision-protection sensitivity can be configured per joint. The web UI provides emergency stop, error clearing, joint enable/disable, and speed adjustment controls.</li>
+</ul>
+
+<h2 id="2-teleoperation-specific-takeaways">2. Teleoperation-specific takeaways</h2>
+
+<h3 id="a-direct-drag-teaching">A. Direct drag teaching</h3>
+
+<ol>
+  <li>Create a teaching program and name it.</li>
+  <li>Select <strong>Add</strong> in the operation panel.</li>
+  <li>The arm enters gravity-compensation mode, allowing the operator to physically guide it.</li>
+  <li>Move the arm through the desired poses.</li>
+  <li>Select <strong>Pause</strong> to stop recording.</li>
+  <li>Save or manage the resulting trajectory for later execution.</li>
+</ol>
+
+<p>This is the most direct method for collecting demonstrations or teaching a task without manually entering joint or Cartesian coordinates. Gravity compensation depends on correct joint-zero calibration; an incorrect zero position can make teaching behavior unreliable.</p>
+
+<h3 id="b-masterslave--leaderfollower-teleoperation">B. Master–slave / leader–follower teleoperation</h3>
+
+<ul>
+  <li><strong>Normal:</strong> The arm operates independently and does not participate in coordination.</li>
+  <li><strong>Leader:</strong> The selected arm provides the motion that drives the follower.</li>
+  <li><strong>Follower:</strong> The selected arm tracks the leader’s motion in real time.</li>
+  <li>Keep the leader and follower physically close before enabling coordination. Otherwise, the follower may move rapidly to catch up with the leader.</li>
+  <li>Never configure both arms as followers. Do not enable CAN push simultaneously when the two arms are connected; the manual says this can cause abnormal CAN communication and require a restart.</li>
+  <li>For gripper teleoperation, select the <strong>Gripper</strong> controller type and enable the gripper before operation.</li>
+</ul>
+
+<p>Leader–follower mode is therefore the clearest option for live bilateral-style motion transfer, while drag teaching is better suited to recording a demonstration for later replay.</p>
+
+<h3 id="c-remotewebapi-control">C. Remote/web/API control</h3>
+
+<ul>
+  <li>Connect over Ethernet or Wi-Fi; for Ethernet, the host and arm must be on the same network segment.</li>
+  <li>Select <strong>Web mode</strong> before issuing web-interface motion commands. Other modes are mutually independent, and switching modes can stop trajectory motion.</li>
+  <li>For software integration, use the documented Python SDK (<code class="language-plaintext highlighter-rouge">pyAgxArm</code>) after enabling CAN publishing in the web interface.</li>
+  <li>For lower-level integrations, the arm exposes CAN 2.0B at 1000 kbit/s using Motorola/MSB message format; the detailed CAN protocol is supplied by the manufacturer.</li>
+  <li>Treat MIT mode as an advanced, relatively dangerous interface because it directly exposes joint position, speed, gains, and torque.</li>
+</ul>
+
+<h2 id="3-recommended-teleoperation-operating-procedure">3. Recommended teleoperation operating procedure</h2>
+
+<ol>
+  <li>Secure the base and end-effector, clear the workspace, and keep the arm within line of sight.</li>
+  <li>Verify payload, cables, mounting orientation, joint-zero calibration, and tool parameters.</li>
+  <li>Set conservative joint limits, end-effector speed/acceleration limits, and collision sensitivity.</li>
+  <li>Use <strong>Web mode</strong> for setup and configuration.</li>
+  <li>Choose the operating mode:
+    <ul>
+      <li>drag teaching for demonstration capture;</li>
+      <li>leader/follower for live motion transfer;</li>
+      <li>API/CAN/web control for a remote application or supervisory controller;</li>
+      <li>trajectory mode for repeatable playback.</li>
+    </ul>
+  </li>
+  <li>Start at reduced speed and test the complete range with no people or obstacles in the workspace.</li>
+  <li>Keep emergency stop accessible. Stop immediately for abnormal motion, software errors, unexpected resistance, or communication problems.</li>
+</ol>
+
+<h2 id="4-important-limitations-and-risks">4. Important limitations and risks</h2>
+
+<ul>
+  <li>The arm has no automatic obstacle-avoidance or sensing sensors; teleoperation must be supervised by a person who can see the workspace.</li>
+  <li>Commands must remain within joint limits, and Cartesian paths can fail if any requested point or intermediate point is unreachable.</li>
+  <li>Avoid configurations that place J2, J3, J4, and J5 at zero during kinematic control because they may approach a singularity.</li>
+  <li>Power loss causes the arm to deactivate and drop directly, so unplugging the aviation connector is an emergency measure only and can create additional hazards.</li>
+  <li>Do not connect unauthorized CAN devices to the end-effector interface; it is specified for AgileX devices.</li>
+  <li>A complete installation still requires an application-level risk assessment and any additional safeguarding required by applicable regulations.</li>
+</ul>
+
+<h2 id="5-practical-design-implications">5. Practical design implications</h2>
+
+<p>For a teleoperation system, use the leader/follower mode or drag-teaching mode as the human-input layer, trajectory storage as the replay layer, and the Python API/CAN interface as the integration layer. Build independent supervisory safety around the arm rather than relying only on software limits: enforce workspace boundaries, communication-loss handling, speed reduction, a reachable emergency stop, and a verified safe posture. Before collecting demonstrations or trusting replayed motions, validate zero calibration, tool mass/center of gravity, mounting orientation, and collision settings.</p>
+
+<h3 id="manual-sections-used">Manual sections used</h3>
+
+<p>Sections 1.2, 2 (precautions), 4, 5.1.3, 6.1–6.8, 9, 10, and 11.3 of <code class="language-plaintext highlighter-rouge">NeDoc.pdf</code>.</p>
+
+    </main>
+    <footer class="site-footer">
+      <span>CE-0169 Documentation</span>
+      <span>Markdown documentation</span>
+    </footer>
+  </body>
+</html>
