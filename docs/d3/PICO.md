@@ -2,20 +2,14 @@
 layout: default
 title: PICO Virtual Reality System
 ---
----
-layout: default
-title: PICO Virtual Reality System
----
-
 # VR-Based Robotic Arm Teleoperation
 
-### PICO VR Motion Tracking and AgileX NERO Robotic Arm Integration
+---
+
+## 1.1 Definition
 
 ---
 
-# 1. Introduction
-
-## 1.1 Definition
 
 **Virtual Reality (VR)-Based Robotic Teleoperation** is a method of remotely controlling a robotic system through human movements captured by a virtual reality tracking device. [2, 3]
 
@@ -29,7 +23,7 @@ The system combines several technologies, including motion tracking, data proces
 
 # 2. System Architecture
 
-## 2.1 General Architecture
+---
 
 The system consists of three main components:
 
@@ -76,6 +70,9 @@ The system consists of three main components:
 
 # 3. PICO VR Tracking System
 
+---
+
+
 ## 3.1 Overview
 
 The PICO VR headset tracks the movements of the operator's handheld controllers using **Six Degrees of Freedom (6-DoF)** tracking. This allows the system to estimate both the position and orientation of the controllers in three-dimensional space. [2, 3]
@@ -93,12 +90,14 @@ The system combines visual information with inertial measurements through a proc
 
 An Inertial Measurement Unit (IMU) typically contains:
 
-| Component | Function |
+| Component   | Function |
 |---|---|
-| Accelerometer | Measures linear acceleration |
-| Gyroscope | Measures angular velocity |
+| Accelerometer   | Measures linear acceleration |
+| Gyroscope    | Measures angular velocity |
 
 Combining these measurements helps the system estimate controller movement. [2]
+
+---
 
 
 # 4. References
