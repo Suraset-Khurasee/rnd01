@@ -103,7 +103,7 @@ Combining these measurements helps the system estimate controller movement. [2]
 ---
 
 
-#3 4. References
+## 4. References
 
 ---
 
