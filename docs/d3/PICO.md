@@ -100,12 +100,15 @@ An Inertial Measurement Unit (IMU) typically contains:
 
 Combining these measurements helps the system estimate controller movement. [2]
 
----
 
 # 4. References
 
+---
+
 [1] https://global.agilex.ai/products/nero
+
 [2] https://picosdk.readthedocs.io/en/latest/
+
 [3] https://github.com/KhronosGroup/OpenXR-Docs
 
 ---
