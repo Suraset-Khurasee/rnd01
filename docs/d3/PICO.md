@@ -5,11 +5,11 @@ title: PICO Virtual Reality System
 
 ---
 
-### VR-Based Robotic Arm Teleoperation
+# VR-Based Robotic Arm Teleoperation
 
 ---
 
-# 1. Definition
+## 1. Definition
 
 ---
 
@@ -24,7 +24,7 @@ The system combines several technologies, including motion tracking, data proces
 
 ---
 
-# 2. System Architecture
+## 2. System Architecture
 
 ---
 
@@ -34,7 +34,7 @@ The system consists of three main components:
 2. **Computer-Based Processing System:** Processes tracking information and converts it into robotic movement commands.
 3. **AgileX NERO Robotic Arm:** Receives the commands and physically reproduces the intended movements. [1]
 
-### General Workflow
+## General Workflow
 
 ```text
        HUMAN OPERATOR
@@ -71,12 +71,12 @@ The system consists of three main components:
 
 ---
 
-# 3. PICO VR Tracking System
+## 3. PICO VR Tracking System
 
 ---
 
 
-## 3.1 Overview
+### 3.1 Overview
 
 The PICO VR headset tracks the movements of the operator's handheld controllers using **Six Degrees of Freedom (6-DoF)** tracking. This allows the system to estimate both the position and orientation of the controllers in three-dimensional space. [2, 3]
 
@@ -85,7 +85,7 @@ The PICO VR headset tracks the movements of the operator's handheld controllers 
 - **Translation:** Movement along the X, Y and Z axes (left/right, up/down and forward/backward).
 - **Rotation:** Rotation around three axes (roll, pitch and yaw). [3]
 
-## 3.2 Tracking Technology
+### 3.2 Tracking Technology
 
 PICO VR uses inside-out tracking, where sensors and cameras on the **headset** help estimate the position of the headset and controllers. [2]
 
@@ -103,7 +103,7 @@ Combining these measurements helps the system estimate controller movement. [2]
 ---
 
 
-# 4. References
+#3 4. References
 
 ---
 
