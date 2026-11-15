@@ -2,11 +2,14 @@
 layout: default
 title: PICO Virtual Reality System
 ---
+
+---
+
 # VR-Based Robotic Arm Teleoperation
 
 ---
 
-## 1.1 Definition
+# 1 Definition
 
 ---
 
@@ -68,12 +71,12 @@ The system consists of three main components:
 
 ---
 
-# 3. PICO VR Tracking System
+## 3. PICO VR Tracking System
 
 ---
 
 
-## 3.1 Overview
+### 3.1 Overview
 
 The PICO VR headset tracks the movements of the operator's handheld controllers using **Six Degrees of Freedom (6-DoF)** tracking. This allows the system to estimate both the position and orientation of the controllers in three-dimensional space. [2, 3]
 
@@ -104,10 +107,10 @@ Combining these measurements helps the system estimate controller movement. [2]
 
 ---
 
-[1] https://global.agilex.ai/products/nero
+[[1] https://global.agilex.ai/products/nero](https://global.agilex.ai/products/nero)
 
-[2] https://picosdk.readthedocs.io/en/latest/
+[[2] https://picosdk.readthedocs.io/en/latest/](https://picosdk.readthedocs.io/en/latest/)
 
-[3] https://github.com/KhronosGroup/OpenXR-Docs
+[[3] https://github.com/KhronosGroup/OpenXR-Docs](https://github.com/KhronosGroup/OpenXR-Docs)
 
 ---
