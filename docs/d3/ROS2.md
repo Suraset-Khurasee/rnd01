@@ -9,7 +9,7 @@ title: ROS-2
 
 ---
 
-ROS 2 is an open-source set of software libraries, tools, and middleware designed to build robotic applications. [1]
+ROS 2 is an open-source set of software libraries, tools, and middleware designed to build robotic applications. [1] 
 
 
 ## Roles
@@ -38,8 +38,8 @@ Rather than developing an entire application from scratch, developers build upon
 The fundamental principle of ROS 2 is to divide complex robotic applications into independent components and provide standardised mechanisms for those components to communicate and coordinate.
 
 
-[1] https://docs.ros.org/en/lyrical/index.html
+[[1] https://docs.ros.org/en/lyrical/index.html](https://docs.ros.org/en/lyrical/index.html)
 
-[2] https://repo.test.ros2.org/en/kilted/Concepts/Basic.html
+[[2] https://repo.test.ros2.org/en/kilted/Concepts/Basic.html](https://repo.test.ros2.org/en/kilted/Concepts/Basic.html)
 
-[3] https://husarion.com/tutorials/ros2-tutorials/1-ros2-introduction/
+[[3] https://husarion.com/tutorials/ros2-tutorials/1-ros2-introduction/](https://husarion.com/tutorials/ros2-tutorials/1-ros2-introduction/)
