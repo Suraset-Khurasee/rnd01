@@ -5,7 +5,7 @@ title: Structured Pruning
 
 # Structured Pruning For Neural Networks
 
-*Quick guide through Pruning:https://www.youtube.com/watch?v=qDRLgT9qpTA*
+*Quick guide through Pruning: [https://www.youtube.com/watch?v=qDRLgT9qpTA*]
 
 ## What is Pruning?
 
