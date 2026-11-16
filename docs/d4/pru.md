@@ -72,20 +72,24 @@ Example:
 If the loss increase significantly after removing a component, the component is presumed to be important. Gradient-based methods use derivatives to estimate how changes in parameters or components affect the loss.
 
 For a parameter w, the gradient is:
+
+
+
+
 ![alt text](image-1.png)
 
 **Taylor-based importance**
 A Taylor approximation can estimate how much the loss changes when a component is removed.
 
-Suppose a component is represented by a scaling variable $\(z\)$, where:
-- $\(z=1\)$: component is retained.
-- $\(z=0\)$: component is removed.
+Suppose a component is represented by a scaling variable \(z\), where:
+- \(z=1\): component is retained.
+- \(z=0\): component is removed.
 A first-order approximation gives:
 
-$$\[
+\[
 \Delta L \approx
 \frac{\partial L}{\partial z}(0-1)
-\]$$
+\]
 
 The magnitude of this estimated change can be used as an importance measure.
 
