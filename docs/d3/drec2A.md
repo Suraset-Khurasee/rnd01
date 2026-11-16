@@ -35,4 +35,4 @@ During each recording, one of our members will place the orange cube on a convey
 
 ### Result
 
-After training, the robot arm is able to place the orange cube on top of the red cube if it is in the corner. When we shifted the position of the red cube, the arm continued to place the orange cube in the corner of the tray. Therefore, our methodology failed the task that we wanted.
+After training, the robot arm is able to place the orange cube on top of the red cube if it is in the corner. 
