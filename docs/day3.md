@@ -14,3 +14,4 @@ title: Journal Directory
 ## Developments
 - [Prototype for EZVR - UI](../d3/EZVR-UI/)
 - [Visualization for Forward Kinematics & Inverse Kinematics](../d2/structure/)
+- [First Data Recording For Leader-Follower Teleoperation](../d3/drec2A/)
