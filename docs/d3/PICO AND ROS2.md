@@ -1,6 +1,6 @@
 ---
 layout: default
-title: PICO 4 VR TELEOPERATION SYSTEM AND ROS 2
+title: PICO AND ROS2
 ---
 
 # PICO 4 VR Teleoperation System

@@ -8,9 +8,7 @@ title: Journal Directory
 ## Resources
 
 ## Skills We Learnt
-- [ROS-2](../d3/ROS2/)
-- [PICO Virtual System](../d3/PICO/)
-- [PICO Virtual System REFINED](../d3/PICOVR/)
+- [PICO Virtual System and ROS 2](../d3/PICO AND ROS2/)
 
 
 ## Developments
