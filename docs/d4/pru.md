@@ -87,9 +87,7 @@ Suppose a component is represented by a scaling variable $z$, where:
 
 A first-order approximation gives:
 
-$$
-\Delta L \approx \frac{\partial L}{\partial z}(0 - 1)
-$$
+$$\Delta L \approx \frac{\partial L}{\partial z}(0 - 1)$$
 
 
 The magnitude of this estimated change can be used as an importance measure.
@@ -106,9 +104,7 @@ Secondly, the algorithm removes the amount of components based on a chosen ratio
 For example, if we choose a 25% pruning ratio:
 
 
-$\
-8\times0.25=2
-\$
+$\8\times0.25=2\$
 
 Thirdly, there are two ways to allocate pruning: Global and Layer-wise. Global Pruning compares the scores across multiple layers and select the least importance ones in the network. Meanwhile, Layer-wise Pruning determine a separate ratio for each layers. Neither approaches are universally better.
 
