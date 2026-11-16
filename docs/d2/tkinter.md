@@ -37,11 +37,13 @@ The main layers of the Tkinter's architecture are:
 
 root = tk.Tk()
 ```
+
 **Label() - Displaying text**
 ```
 label = tk.Label(root, text="Hello World")
 label.pack()
 ```
+
 **Button() - Creating a button**
 ```
 def say_hello():
@@ -55,6 +57,7 @@ button = tk.Button(
 
 button.pack()
 ```
+
 **Entry() - Receiving user input**
 ```
 entry = tk.Entry(root)
@@ -64,6 +67,7 @@ def get_input():
     value = entry.get()
     print(value)
 ```
+
 **Bind() - Detect user interactions**
 ```
 def on_click(event):
