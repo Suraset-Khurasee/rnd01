@@ -216,48 +216,14 @@ In π₀.₅, Flow Matching is used to generate continuous robot action sequence
 
 Rather than directly predicting a complete action sequence in a single operation, the model begins with noisy action values and progressively transforms them towards a meaningful action sequence.
 
+Noisy action values = randomly generated numerical values that serves as the starting point for generating an output. It acts like a starting point, but not unwanted errors. 
+
 This process allows the model to generate smooth and continuous robot movements.
 
 ### 6.2 How Flow Matching Works
 
-During training, the model learns to predict the direction in which noisy action sequences should be transformed to match the demonstrated robot actions.
+During training, the model learns a vector field using robot demonstrations. This vector field describes the direction and magnitude required to transform random noise into realistic action sequences. During inference, the model starts with random noise and repeatedly applies the predicted vector field over 10 steps, progressively generating a meaningful action chunk that can be executed by the robot.
 
-The general process is:
-
-1. Obtain a ground-truth robot action sequence from the training dataset.
-2. Generate a random noise sample.
-3. Interpolate between the ground-truth actions and the noise.
-4. Train the Action Expert to predict the corresponding flow vector.
-5. Minimise the difference between the predicted flow vector and the target flow vector.
-
-During inference:
-
-1. Initialise an action sequence using random noise.
-2. Pass the noisy action sequence and relevant observations into the Action Expert.
-3. Predict the flow vector that indicates how the action sequence should be updated.
-4. Iteratively refine the action sequence.
-5. Produce the final continuous actions for the robot controller.
-
-The mathematical formulation used in the paper is:
-
-$$
-a^{\tau,\omega} = \tau a + (1-\tau)\omega
-$$
-
-Where:
-
-- $a$ = Ground-truth action sequence.
-- $\omega$ = Random Gaussian noise.
-- $\tau$ = Flow Matching time variable, ranging from 0 to 1.
-- $a^{\tau,\omega}$ = Interpolated noisy action sequence.
-
-The model learns to predict the target flow vector:
-
-$$
-v = \omega - a
-$$
-
-The predicted flow vector is subsequently used to refine the noisy action sequence.
 
 ### 6.3 Denoising Steps
 
@@ -273,25 +239,6 @@ The number of denoising steps affects the computational cost of generating an ac
 
 More iterative steps generally require additional computation, although the relationship between the number of steps and action quality depends on the model and inference configuration.
 
-### 6.4 Similarities and Differences Between Flow Matching and ACT
-
-Both approaches predict action chunks rather than individual robot movements.
-
-However, their generation mechanisms differ.
-
-| Feature | ACT | π₀.₅ Flow Matching |
-|---|---|---|
-| Action generation | Transformer decoder | Action Expert |
-| Generation method | CVAE-based action prediction | Iterative flow integration |
-| Initialisation | Learned latent representation during training | Random noise during inference |
-| Refinement | Decoder predicts an action chunk | Multiple denoising steps refine the action chunk |
-| Output | Sequence of future actions | Sequence of continuous future actions |
-| Main purpose | Reproduce demonstrated behaviour | Generate continuous actions conditioned on multimodal observations and instructions |
-
-**Important:** Both methods use action chunking, but ACT does not use Flow Matching or the same iterative denoising procedure.
-
-References: [1, 3].
-
 ---
 
 ## 7. Training Methodology
@@ -303,7 +250,6 @@ Heterogeneous co-training refers to training a model using different datasets th
 The purpose is to allow the model to acquire knowledge from multiple sources and transfer that knowledge to robotic manipulation. [1].
 
 ---
-
 
 ## 9. Hardware Requirements and Deployment Viability
 
