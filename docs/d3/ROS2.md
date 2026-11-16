@@ -9,7 +9,7 @@ title: ROS-2
 
 ---
 
-ROS 2 is an open-source set of software libraries, tools, and middleware designed to build robotic applications. [1] 
+ROS 2 is an open-source set of software libraries, tools, and middleware designed to build robotic applications. [1]  
 
 
 ## Roles
