@@ -8,7 +8,6 @@ title: Journal Directory
 ## Resources
 
 ## Skills We Learnt
-- [JL-Lemma Projection](../d4/JL/)
 - [Mixed-precision Quantization](../d4/mpq/)
 - [Structured Pruning](../d4/pru/)
 - [SmolVLA](../d4/smol/)
