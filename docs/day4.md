@@ -13,6 +13,7 @@ title: Journal Directory
 - [SmolVLA](../d4/smol/)
 - [Pi0.5](../d4/pi0.5/)
 
+
 ## Developments
 - [EZ-GUI Update](../d2/EZ-Gui/)
 - [Data Record For VR](../d4/vrec/)
