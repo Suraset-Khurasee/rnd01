@@ -81,15 +81,16 @@ For a parameter w, the gradient is:
 **Taylor-based importance**
 A Taylor approximation can estimate how much the loss changes when a component is removed.
 
-Suppose a component is represented by a scaling variable \(z\), where:
-- \(z=1\): component is retained.
-- \(z=0\): component is removed.
+Suppose a component is represented by a scaling variable $z$, where:
+- $z = 1$: component is retained.
+- $z = 0$: component is removed.
+
 A first-order approximation gives:
 
-\[
-\Delta L \approx
-\frac{\partial L}{\partial z}(0-1)
-\]
+$$
+\Delta L \approx \frac{\partial L}{\partial z}(0 - 1)
+$$
+
 
 The magnitude of this estimated change can be used as an importance measure.
 
@@ -103,9 +104,11 @@ Firstly, the algorithm sorts the neurons from least important to most important.
 
 Secondly, the algorithm removes the amount of components based on a chosen ratio. 
 For example, if we choose a 25% pruning ratio:
-$\[
+
+
+$\
 8\times0.25=2
-\]$
+\$
 
 Thirdly, there are two ways to allocate pruning: Global and Layer-wise. Global Pruning compares the scores across multiple layers and select the least importance ones in the network. Meanwhile, Layer-wise Pruning determine a separate ratio for each layers. Neither approaches are universally better.
 
