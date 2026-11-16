@@ -1,6 +1,6 @@
 ---
 layout: default
-title: FK-IK Visualization
+title: PICO 4 VR TELEOPERATION SYSTEM AND ROS 2
 ---
 
 # PICO 4 VR Teleoperation System
@@ -48,6 +48,12 @@ The system supports visualisation through tools such as MuJoCo and MeshCat [1].
 - **MuJoCo:** Provides a physics-based simulation environment for the robotic arms.
 - **MeshCat:** Provides 3D visualisation through a browser interface.
 
+![MuJoCo]({{ '/images/mujuco.jpg?v=1' | relative_url }})
+
+
+![Meshcat]({{ '/images/meshcat.jpg?v=1' | relative_url }})
+
+
 ---
 
 ## 3. ROS 2 (Robot Operating System 2)
@@ -60,7 +66,9 @@ It provides standardised communication mechanisms that allow different software 
 
 ### 3.2 Role in the VR Teleoperation System
 
-In this system, ROS 2 manages communication between the workstation's teleoperation software and the AgileX Nero robotic arms.
+In the PICO 4 teleoperation system, ROS 2 operates on the workstation side, rather than directly inside the VR headset.
+
+After the PICO 4 transmits the controller tracking data to the workstation, LeRobot processes the data and calculates the required joint angles through Inverse Kinematics. ROS 2 is then used on the workstation to interface with the AgileX Nero robotic arms.
 
 The `lerobot_agx_adapter` package provides the interface between ROS 2 and the robotic hardware, allowing the system to transmit joint commands and receive information from the hardware [1].
 
@@ -70,27 +78,24 @@ ROS 2 organises robotic applications into independent components called nodes. T
 
 **1. Nodes**
 
-Independent processes responsible for specific tasks within a robotic system.
-
-*Context:* The ROS 2 hardware adapter operates as a node that manages communication with the AgileX Nero robotic arms [1][3].
+Independent processes responsible for specific tasks within a robotic system. [2]
 
 **2. Topics**
 
-Communication channels that allow nodes to exchange data through a publisher-subscriber system.
+Communication channels that allow nodes to exchange data through a publisher-subscriber system. [2]
 
-*Context:* Topics can transmit continuous robotic data, such as joint states [2].
 
 **3. Services**
 
-A request-response communication mechanism used for operations that require a single response.
+A request-response communication mechanism used for operations that require a single response. [2]
 
-*Context:* Services can be used for short operations, such as requesting system information [2].
+
 
 **4. Actions**
 
-A communication mechanism designed for long-running tasks. It supports goals, feedback and final results.
+A communication mechanism designed for long-running tasks. It supports goals, feedback and final results. [2]
 
-*Context:* Actions can manage robotic operations that require progress updates before completion [2].
+
 
 ---
 
