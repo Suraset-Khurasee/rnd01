@@ -11,7 +11,7 @@ title: Journal Directory
 - [Mixed-precision Quantization](../d4/mpq/)
 - [Structured Pruning](../d4/pru/)
 - [SmolVLA](../d4/smol/)
-- [Pi0.5](../d4/pi/)
+- [Pi0.5](../d4/pi0.5/)
 
 ## Developments
 - [EZ-GUI Update](../d2/EZ-Gui/)
