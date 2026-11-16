@@ -39,21 +39,6 @@ The three primary components are:
 | Language | Interprets natural language instructions and task objectives. | Understanding the instruction "Pick up the cup". |
 | Action | Generates robot movements based on visual observations and instructions. | Moving the robotic arm towards the cup. |
 
-
-### 2.2 General VLA Workflow
-
-The general workflow of a VLA model can be represented as:
-
-**Visual Observations + Language Instructions + Robot State → VLA Model → Robot Actions**
-
-The process consists of three main stages:
-
-1. **Perception:** The model processes camera observations and robot state information to understand the current environment.
-2. **Interpretation:** The model combines visual information with language instructions to determine the intended task.
-3. **Action Generation:** The model generates robot movements based on the interpreted task and current observations.
-
-Unlike conventional imitation-learning policies, VLAs can incorporate semantic information (high-level goal that has been broken down into smaller, logically coherent subtasks [8]) from language and visual data, allowing them to perform tasks that are not restricted to a single demonstrated action sequence [1].
-
 ---
 
 ## 3. Purpose of Pi 0.5
@@ -71,7 +56,6 @@ This is because the model may have learned a relatively narrow relationship betw
 π₀.₅ addresses this challenge by learning from a broader range of training data, allowing it to transfer knowledge across different environments and tasks. 
 
 ### 3.2 Three Levels of Generalisation
-
 
 ### A. Physical Generalisation
 
