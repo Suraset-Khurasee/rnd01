@@ -10,6 +10,8 @@ title: Journal Directory
 ## Skills We Learnt
 - [ROS-2](../d3/ROS2/)
 - [PICO Virtual System](../d3/PICO/)
+- [PICO Virtual System REFINED](../d3/PICOVR/)
+
 
 ## Developments
 - [Prototype for EZVR - UI](../d3/EZVR-UI/)
