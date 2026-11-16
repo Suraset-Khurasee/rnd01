@@ -19,7 +19,7 @@ Firstly, we need to use a base to create the GUI (Graphical User Interface). For
 2. Tkinter can be run on Linux.
 3. Tkinter provides user-friendly inputs for existing terminal scripts.
 
-Read more about [Tkinter](../d2/tkinter/).
+Read more about [Tkinter](../d2/tkinter.md).
 
 ## Limitations and Problems
 
