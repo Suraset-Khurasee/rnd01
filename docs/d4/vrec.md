@@ -28,7 +28,7 @@ Since we were working in a shared lab, we did not want to move items too frequen
 For the important settings of the recording, we chose:
 - 20 episodes of recoding
 - 25 seconds of recording time
-- Neglibigle environment reset time
+- Negligible environment reset time
 
 Before and after each recording, we reset the environment by removing the orange cube from the black tray.
 
