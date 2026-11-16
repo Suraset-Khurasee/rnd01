@@ -15,10 +15,9 @@ There are two types of pruning:
 - **Unstructured Pruning**
 - **Structured Pruning**
 
-- image slot here
 ## Quick look into Unstructured Pruning
 
-Unstructured Pruning removes connections (weights) of neural networks, resulting in un-structured sparsity. Unstructured Pruning often leads to a high compression rate, but requires specific hardware or
+Unstructured Pruning removes connections (weights) of neural networks, resulting in unstructured sparsity. Unstructured Pruning often leads to a high compression rate, but requires specific hardware or
 library support for realistic acceleration. [1]
 
 In other words, Unstructured Pruning reduce the weights of individual unnecessary connections to 0 without caring about the structure of the neural network. However, due to this chaotic dispersion of zeros, computers often have a hard time to process through these 0s, resulting almost to no change in latency unless specific hardwares or library support is used.
