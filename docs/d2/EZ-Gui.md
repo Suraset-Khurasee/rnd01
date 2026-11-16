@@ -15,9 +15,16 @@ Step 1 : constant command, nothing important except sudo password (textbox in)i
 Step 2 : Teleoperation, constant command with 2 options : Teleop w and w/o cameras with differing commands.
 Step 3 : Recording of Data. Here, we can utilize a proper text box, where we use the task name and file storage to sort and oragnize case specific files, with messageboxes of Reset time/ Ep time/ Num Ep Fps / Speed.
 Steos 4, 5, 6: works as a simple text box just like 1 2 and 3 and is easily accesible to the user, using same tkinter framework. 
-Preview of the GUI:
-![Preview of gui]({{ '/images/ezgui.jpg?v=1' | relative_url }})
 
+Developer update : we have fixed the color of the text from white -> black as per user feedback
+
+![Preview of gui]({{ '/images/finalezgui.jpg?v=1' | relative_url }})
+
+
+Suggestions from user feedback : 
+	AI explaining the error so the user knows how to debug
+	Leader/Follower Indicators 
+These need implementing via a web api and we need to do research in that department.
 
 
 
