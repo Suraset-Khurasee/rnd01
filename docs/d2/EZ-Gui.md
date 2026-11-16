@@ -27,7 +27,5 @@ Errors and limitations:
 - CAN socket when connected shows "UP" although the robot's power is off. Can be changed to "DOWN" if offline
 - When improperly closing the GUI the program infinitely runs on autonomous rollout.
 
-Training Footage : 
-![Preview of gui]({{ '/images/timelapz.gif?v=1' | relative_url }})
 
 

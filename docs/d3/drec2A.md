@@ -11,6 +11,10 @@ Our group's task for the robot was for it to stack a tower which involves a give
 
 ## Methodology and Observation
 
+
+Training Footage : 
+![Preview of gui]({{ '/images/timelapz.gif?v=1' | relative_url }})
+
 ### Environment
 
 Since we were working in a shared lab, we did not want to move items too frequently. Hence, we kept the trays that we deemed as insignificant to the result. The important components of our environment are:
