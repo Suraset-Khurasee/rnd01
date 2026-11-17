@@ -105,7 +105,7 @@
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Choose a target point. The arm solves for joints 1 and 2 while preserving joint 3.</p>
+        <p class="control-help">Choose a target point. The arm adjusts all three joints to reach it.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
@@ -154,8 +154,6 @@
       y: Math.sin(angle) * distance
     });
     const format = (value) => `${Math.round(value)}`;
-    const polar = (x, y) => Math.atan2(y, x);
-
     function forward(angles) {
       const radians = angles.map(degToRad);
       const p1 = point(radians[0], lengths[0]);
@@ -197,6 +195,7 @@
         const progress = Math.min((now - started) / 420, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         state.angles = start.map((angle, index) => angle + (nextAngles[index] - angle) * eased);
+        setSliderValues();
         draw();
         if (progress < 1) state.frame = requestAnimationFrame(tick);
       };
@@ -213,28 +212,53 @@
     function solve() {
       const x = Number(app.querySelector("[data-target-x]").value);
       const y = Number(app.querySelector("[data-target-y]").value);
-      const q3 = state.angles[2];
-      const wristDistance = Math.hypot(x, y);
-      const wristAngle = polar(x, y);
-      const wrist = {
-        x: x - point(wristAngle + degToRad(q3), lengths[2]).x,
-        y: y - point(wristAngle + degToRad(q3), lengths[2]).y
-      };
-      const reach = Math.hypot(wrist.x, wrist.y);
-      const cosine = (reach * reach - lengths[0] * lengths[0] - lengths[1] * lengths[1]) / (2 * lengths[0] * lengths[1]);
-      if (wristDistance > lengths.reduce((sum, length) => sum + length, 0) || cosine < -1 || cosine > 1 || !Number.isFinite(cosine)) {
+      const maxReach = lengths.reduce((sum, length) => sum + length, 0);
+      if (!Number.isFinite(x) || !Number.isFinite(y) || Math.hypot(x, y) > maxReach) {
         solveMessage.textContent = "Target is outside the reachable workspace.";
         solveMessage.classList.add("is-error");
         return;
       }
-      const elbow = Math.acos(Math.max(-1, Math.min(1, cosine)));
-      const shoulder = Math.atan2(wrist.y, wrist.x) - Math.atan2(lengths[1] * Math.sin(elbow), lengths[0] + lengths[1] * Math.cos(elbow));
-      const next = [radToDeg(shoulder), radToDeg(elbow), q3];
+      const next = state.angles.map(degToRad);
+      const limits = [[-180, 180], [-170, 170], [-170, 170]].map(([min, max]) => [degToRad(min), degToRad(max)]);
+      let error = Infinity;
+      for (let iteration = 0; iteration < 120; iteration += 1) {
+        const points = forward(next);
+        const end = points[3];
+        const errorX = x - end.x;
+        const errorY = y - end.y;
+        error = Math.hypot(errorX, errorY);
+        if (error < 0.5) break;
+
+        const jacobian = next.map((_, index) => {
+          const pivot = points[index];
+          return {
+            x: -(end.y - pivot.y),
+            y: end.x - pivot.x
+          };
+        });
+        const damping = 4;
+        const xx = jacobian.reduce((sum, column) => sum + column.x * column.x, damping * damping);
+        const xy = jacobian.reduce((sum, column) => sum + column.x * column.y, 0);
+        const yy = jacobian.reduce((sum, column) => sum + column.y * column.y, damping * damping);
+        const determinant = xx * yy - xy * xy;
+        const projectedX = (yy * errorX - xy * errorY) / determinant;
+        const projectedY = (xx * errorY - xy * errorX) / determinant;
+        next.forEach((angle, index) => {
+          const change = Math.max(-0.25, Math.min(0.25, jacobian[index].x * projectedX + jacobian[index].y * projectedY));
+          next[index] = Math.max(limits[index][0], Math.min(limits[index][1], angle + change));
+        });
+      }
+      error = Math.hypot(x - forward(next)[3].x, y - forward(next)[3].y);
+      if (error >= 0.5) {
+        solveMessage.textContent = "Target is outside the reachable workspace.";
+        solveMessage.classList.add("is-error");
+        return;
+      }
+      const solvedAngles = next.map(radToDeg);
       state.target = { x, y };
       solveMessage.textContent = "Target is inside the reachable workspace.";
       solveMessage.classList.remove("is-error");
-      setSliderValues();
-      animateTo(next);
+      animateTo(solvedAngles);
     }
 
     ["q1", "q2", "q3"].forEach((name, index) => {
