@@ -25,6 +25,15 @@ Video trained : Pick up the red box
 Prompt given : Pick the orange box (assuming that it can recognise using existing data from SMOLVLA)
 Reality : Does not recognised the orange box 
 
+
 ## Second experiment: using online dataset to train
 
 Purpose: To check whether the VLA works or not
+
+Execution : 
+1. Using the pre-trained model from online 
+Link to [Pre-trained model] (https://thaw-vla.trung-dt.com/)
+
+2. Labelling every episodes with a specific command
+
+3. i know what kind of god i want to be
