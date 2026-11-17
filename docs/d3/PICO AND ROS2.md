@@ -48,10 +48,10 @@ The system supports visualisation through tools such as MuJoCo and MeshCat [1].
 - **MuJoCo:** Provides a physics-based simulation environment for the robotic arms.
 - **MeshCat:** Provides 3D visualisation through a browser interface.
 
-![MuJoCo]({{ '/images/mujuco.jpg?v=1' | relative_url }})
+![MuJoCo]({{ '/images/mujuco.png?v=1' | relative_url }})
 
 
-![Meshcat]({{ '/images/meshcat.jpg?v=1' | relative_url }})
+![Meshcat]({{ '/images/meshcat.png?v=1' | relative_url }})
 
 
 ---

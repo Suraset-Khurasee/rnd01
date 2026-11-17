@@ -18,7 +18,7 @@ Steos 4, 5, 6: works as a simple text box just like 1 2 and 3 and is easily acce
 
 Developer update : we have fixed the color of the text from white -> black as per user feedback
 
-![Preview of gui]({{ '/images/finalezgui.jpg?v=1' | relative_url }})
+![Preview of gui]({{ '/images/finalezgui.png?v=1' | relative_url }})
 
 
 Suggestions from user feedback : 
