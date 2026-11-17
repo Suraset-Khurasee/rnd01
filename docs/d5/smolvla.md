@@ -19,7 +19,7 @@ For our first experiment, we plan to use SmolVLA due to its relatively low param
 
 After trying several times with the trained robot arm we did yesterday, it did not work.
 
-SOON PUT VIDEO HERE : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
+[fail.mp4](../../images/fail.mp4) : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
 
 **Video trained :** Pick up the red box.
 
