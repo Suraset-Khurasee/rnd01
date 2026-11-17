@@ -25,7 +25,9 @@ SOON PUT VIDEO HERE : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
 
 **Prompt given :** Pick the orange box (assuming that it can recognise using existing data from SMOLVLA).
 
-**Reality :** Does not recognised the orange box.
+**Reality :** Does not recognised the orange box. 
+
+**Conclusion :** We learned that the training datasets must be varied and labelled accordingly
 
 
 
