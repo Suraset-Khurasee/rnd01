@@ -59,18 +59,18 @@ title: Arm Structure
 
       <div class="control-section">
         <h3>Forward kinematics</h3>
-        <p class="control-help">Set the three joint angles to calculate the end-effector position.</p>
+        <p class="control-help">Enter any three joint angles to calculate the end-effector position.</p>
         <label class="number-control">
           <span>Joint 1 <b data-q1-value>20°</b></span>
-          <input type="range" min="0" max="170" value="20" step="1" data-q1>
+          <input type="number" value="20" step="any" data-q1>
         </label>
         <label class="number-control">
           <span>Joint 2 <b data-q2-value>35°</b></span>
-          <input type="range" min="0" max="170" value="35" step="1" data-q2>
+          <input type="number" value="35" step="any" data-q2>
         </label>
         <label class="number-control">
           <span>Joint 3 <b data-q3-value>20°</b></span>
-          <input type="range" min="0" max="170" value="20" step="1" data-q3>
+          <input type="number" value="20" step="any" data-q3>
         </label>
       </div>
 
@@ -91,7 +91,7 @@ title: Arm Structure
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Move the target; inverse kinematics adjusts all three joints. End-effector orientation is unconstrained.</p>
+        <p class="control-help">Move the target; inverse kinematics adjusts all three joints without angle limits. End-effector orientation is unconstrained.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
@@ -183,24 +183,22 @@ title: Arm Structure
         const progress = Math.min((now - started) / 420, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
         state.angles = start.map((angle, index) => angle + (nextAngles[index] - angle) * eased);
-        setSliderValues();
+        setAngleInputs();
         draw();
         if (progress < 1) state.frame = requestAnimationFrame(tick);
       };
       state.frame = requestAnimationFrame(tick);
     }
 
-    function setSliderValues() {
+    function setAngleInputs() {
       ["q1", "q2", "q3"].forEach((name, index) => {
-        app.querySelector(`[data-${name}]`).value = Math.round(state.angles[index]);
-        app.querySelector(`[data-${name}-value]`).textContent = `${Math.round(state.angles[index])}°`;
+        app.querySelector(`[data-${name}]`).value = state.angles[index].toFixed(1);
+        app.querySelector(`[data-${name}-value]`).textContent = `${state.angles[index].toFixed(1)}°`;
       });
     }
 
     function findSolution(x, y) {
       const current = state.angles.map(degToRad);
-      const jointMin = degToRad(0);
-      const jointMax = degToRad(170);
       const damping = 8;
       const maxStep = 0.22;
       const starts = [
@@ -239,7 +237,7 @@ title: Arm Structure
           const stepScale = largestStep > maxStep ? maxStep / largestStep : 1;
           let changed = false;
           angles.forEach((angle, index) => {
-            const nextAngle = Math.max(jointMin, Math.min(jointMax, angle + steps[index] * stepScale));
+            const nextAngle = angle + steps[index] * stepScale;
             if (Math.abs(nextAngle - angle) > 1e-8) changed = true;
             angles[index] = nextAngle;
           });
@@ -261,7 +259,7 @@ title: Arm Structure
       }
       const solvedAngles = findSolution(x, y);
       if (!solvedAngles) {
-        solveMessage.textContent = "No solution found within the 0°–170° joint limits.";
+        solveMessage.textContent = "No solution found for this target.";
         solveMessage.classList.add("is-error");
         return;
       }
@@ -274,7 +272,7 @@ title: Arm Structure
     ["q1", "q2", "q3"].forEach((name, index) => {
       app.querySelector(`[data-${name}]`).addEventListener("input", (event) => {
         state.angles[index] = Number(event.target.value);
-        app.querySelector(`[data-${name}-value]`).textContent = `${state.angles[index]}°`;
+        app.querySelector(`[data-${name}-value]`).textContent = `${state.angles[index].toFixed(1)}°`;
         draw();
       });
     });

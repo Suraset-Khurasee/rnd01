@@ -357,7 +357,8 @@ input[type="range"] {
   margin-bottom: 14px;
 }
 
-.target-inputs input {
+.target-inputs input,
+.number-control input[type="number"] {
   width: 100%;
   margin-top: 6px;
   padding: 8px;
@@ -381,6 +382,7 @@ input[type="range"] {
 
 .primary-button:focus-visible,
 .target-inputs input:focus-visible,
+.number-control input[type="number"]:focus-visible,
 input[type="range"]:focus-visible {
   outline: 2px solid #f4b740;
   outline-offset: 2px;
