@@ -91,7 +91,7 @@ title: Arm Structure
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Move the target; inverse kinematics adjusts joints 1 and 2 while keeping joint 3 fixed.</p>
+        <p class="control-help">Move the target; inverse kinematics adjusts all three joints. End-effector orientation is unconstrained.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
@@ -199,51 +199,54 @@ title: Arm Structure
 
     function findSolution(x, y) {
       const current = state.angles.map(degToRad);
-      const jointLimit = [degToRad(0), degToRad(170)];
-      const joint3 = current[2];
-      const radius = Math.hypot(x, y);
-      const targetAngle = Math.atan2(y, x);
-      const combinedX = lengths[1] + lengths[2] * Math.cos(joint3);
-      const combinedY = lengths[2] * Math.sin(joint3);
-      const combinedLength = Math.hypot(combinedX, combinedY);
-      const combinedAngle = Math.atan2(combinedY, combinedX);
-      const cosine = (radius * radius - lengths[0] * lengths[0] - combinedLength * combinedLength) / (2 * lengths[0] * combinedLength);
+      const jointMin = degToRad(0);
+      const jointMax = degToRad(170);
+      const damping = 8;
+      const maxStep = 0.22;
+      const starts = [
+        current,
+        [20, 60, 35].map(degToRad),
+        [60, 60, 60].map(degToRad),
+        [110, 45, 20].map(degToRad),
+        [20, 120, 100].map(degToRad),
+        [150, 80, 30].map(degToRad)
+      ];
       let best = null;
 
-      function consider(joint1, joint2) {
-        const tolerance = 1e-10;
-        for (let joint1Turn = -1; joint1Turn <= 1; joint1Turn += 1) {
-          const candidate1 = joint1 + joint1Turn * Math.PI * 2;
-          if (candidate1 < jointLimit[0] - tolerance || candidate1 > jointLimit[1] + tolerance) continue;
-          for (let joint2Turn = -1; joint2Turn <= 1; joint2Turn += 1) {
-            const candidate2 = joint2 + joint2Turn * Math.PI * 2;
-            if (candidate2 < jointLimit[0] - tolerance || candidate2 > jointLimit[1] + tolerance) continue;
-            const limited1 = Math.max(jointLimit[0], Math.min(jointLimit[1], candidate1));
-            const limited2 = Math.max(jointLimit[0], Math.min(jointLimit[1], candidate2));
-            const angles = [limited1, limited2, joint3];
-            const end = forward(angles)[3];
-            if (Math.hypot(x - end.x, y - end.y) >= 0.5) continue;
-            const difference1 = limited1 - current[0];
-            const difference2 = limited2 - current[1];
-            const score = difference1 * difference1 + difference2 * difference2;
-            if (!best || score < best.score) best = { angles, score };
+      starts.forEach((start) => {
+        const angles = [...start];
+        for (let iteration = 0; iteration < 240; iteration += 1) {
+          const points = forward(angles.map(radToDeg));
+          const end = points[3];
+          const errorX = x - end.x;
+          const errorY = y - end.y;
+          if (Math.hypot(errorX, errorY) < 0.5) {
+            const score = angles.reduce((sum, angle, index) => sum + (angle - current[index]) ** 2, 0);
+            if (!best || score < best.score) best = { angles: [...angles], score };
+            break;
           }
+
+          const jacobianX = [-end.y, -(end.y - points[1].y), -(end.y - points[2].y)];
+          const jacobianY = [end.x, end.x - points[1].x, end.x - points[2].x];
+          const matrixXX = jacobianX.reduce((sum, value) => sum + value * value, damping * damping);
+          const matrixXY = jacobianX.reduce((sum, value, index) => sum + value * jacobianY[index], 0);
+          const matrixYY = jacobianY.reduce((sum, value) => sum + value * value, damping * damping);
+          const determinant = matrixXX * matrixYY - matrixXY * matrixXY;
+          const projectedX = (matrixYY * errorX - matrixXY * errorY) / determinant;
+          const projectedY = (matrixXX * errorY - matrixXY * errorX) / determinant;
+          const steps = angles.map((angle, index) => jacobianX[index] * projectedX + jacobianY[index] * projectedY);
+          const largestStep = Math.max(...steps.map(Math.abs));
+          const stepScale = largestStep > maxStep ? maxStep / largestStep : 1;
+          let changed = false;
+          angles.forEach((angle, index) => {
+            const nextAngle = Math.max(jointMin, Math.min(jointMax, angle + steps[index] * stepScale));
+            if (Math.abs(nextAngle - angle) > 1e-8) changed = true;
+            angles[index] = nextAngle;
+          });
+          if (!changed) break;
         }
-      }
-
-      if (cosine < -1 - 1e-10 || cosine > 1 + 1e-10) return null;
-      const elbowOffset = Math.acos(Math.max(-1, Math.min(1, cosine)));
-      if (radius < 1e-8) {
-        if (Math.abs(Math.PI - elbowOffset) > 1e-8) return null;
-        [elbowOffset, -elbowOffset].forEach((elbow) => consider(current[0], elbow - combinedAngle));
-        return best && best.angles;
-      }
-
-      [elbowOffset, -elbowOffset].forEach((elbow) => {
-        const joint1 = targetAngle - Math.atan2(combinedLength * Math.sin(elbow), lengths[0] + combinedLength * Math.cos(elbow));
-        const joint2 = elbow - combinedAngle;
-        consider(joint1, joint2);
       });
+
       return best && best.angles;
     }
 
@@ -258,12 +261,12 @@ title: Arm Structure
       }
       const solvedAngles = findSolution(x, y);
       if (!solvedAngles) {
-        solveMessage.textContent = `No solution with joint 3 fixed at ${state.angles[2]}° and joints 1 and 2 limited to 0°–170°.`;
+        solveMessage.textContent = "No solution found within the 0°–170° joint limits.";
         solveMessage.classList.add("is-error");
         return;
       }
       state.target = { x, y };
-      solveMessage.textContent = `Target reached with joint 3 fixed at ${state.angles[2]}°.`;
+      solveMessage.textContent = "Target reached with all three joints free to move.";
       solveMessage.classList.remove("is-error");
       animateTo(solvedAngles.map(radToDeg));
     }
