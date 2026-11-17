@@ -1,13 +1,15 @@
 # Mixed Precision Quantization
 
 ## Quantization
+
+### Why does it work?
+Integers have very straightforward representation. signed integers store their numbers in base 2 with no additional overhead(except for the sign, but that's irrelevant), making calculations per cycle in a model really really efficient.Compare that to FP16(floating point number) with the following idea : 
+![Preview of gui]({{ '/images/f16rep.png?v=1' | relative_url }})
+
 ### What is quantization?
 LLM weights are stored in high-precision formats (such as 16-bit FP16 or 32-bit FP32), but with quantization, this is reduced by mapping weights to lower-precision formats (such as 8-bit INT8 or 4-bit INT4) to save memory and speed up inference.
 
 ![Preview of gui]({{ '/images/quavis.png?v=1' | relative_url }})
-### Why does it work?
-Integers have very straightforward representation. signed integers store their numbers in base 2 with no additional overhead(except for the sign, but that's irrelevant), making calculations per cycle in a model really really efficient.Compare that to FP16(floating point number) with the following idea : 
-![Preview of gui]({{ '/images/f16rep.png?v=1' | relative_url }})
 
 this is the IEEE standard, many other standards are in the world. but just look at how complex this is.
 As you'd expect floating point operations take A LOT more compute. No hassle for a good gpu, but for local GPUs / Integrated graphics. Floating operations take 3-4 clock cycles depending on the representation and the number itself, just know that it's 3-4x more than integers.
