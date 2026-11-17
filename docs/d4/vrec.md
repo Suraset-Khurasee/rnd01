@@ -14,7 +14,7 @@ Now, the main task is for the robot arm to pick up an orange box at the end of t
 ## Methodology and Observation
 
 Training Footage:
-![Preview of gui]({{ '/images/vr.mp4?v=1' | relative_url }})
+[vr.mp4](../../images/vr.mp4)
 
 ### Environment
 
