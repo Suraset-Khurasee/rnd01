@@ -202,54 +202,42 @@ title: Arm Structure
       const jointLimit = [degToRad(0), degToRad(170)];
       const joint2 = current[1];
       const radius = Math.hypot(x, y);
+      const targetAngle = Math.atan2(y, x);
+      const centerX = lengths[0] + lengths[1] * Math.cos(joint2);
+      const centerY = lengths[1] * Math.sin(joint2);
+      const centerRadius = Math.hypot(centerX, centerY);
+      const cosine = (radius * radius - centerRadius * centerRadius - lengths[2] * lengths[2]) / (2 * centerRadius * lengths[2]);
       let best = null;
 
-      function consider(joint3) {
+      function consider(joint3, freeBaseAngle = false) {
+        const tolerance = 1e-10;
+        if (joint3 < jointLimit[0] - tolerance || joint3 > jointLimit[1] + tolerance) return;
+        joint3 = Math.max(jointLimit[0], Math.min(jointLimit[1], joint3));
         const combinedX = lengths[0] + lengths[1] * Math.cos(joint2) + lengths[2] * Math.cos(joint2 + joint3);
         const combinedY = lengths[1] * Math.sin(joint2) + lengths[2] * Math.sin(joint2 + joint3);
-        const joint1 = Math.atan2(y, x) - Math.atan2(combinedY, combinedX);
-        const angles = [joint1, joint2, joint3];
-        if (joint1 < jointLimit[0] || joint1 > jointLimit[1] || joint3 < jointLimit[0] || joint3 > jointLimit[1]) return;
-        const end = forward(angles)[3];
-        if (Math.hypot(x - end.x, y - end.y) >= 0.5) return;
-        const difference1 = joint1 - current[0];
-        const difference3 = joint3 - current[2];
-        const score = difference1 * difference1 + difference3 * difference3;
-        if (!best || score < best.score) best = { angles, score };
-      }
-
-      function radialError(joint3) {
-        const combinedX = lengths[0] + lengths[1] * Math.cos(joint2) + lengths[2] * Math.cos(joint2 + joint3);
-        const combinedY = lengths[1] * Math.sin(joint2) + lengths[2] * Math.sin(joint2 + joint3);
-        return Math.hypot(combinedX, combinedY) - radius;
-      }
-
-      let previousJoint3 = jointLimit[0];
-      let previousError = radialError(previousJoint3);
-      consider(previousJoint3);
-      for (let step = 1; step <= 1700; step += 1) {
-        const joint3 = degToRad(step / 10);
-        const error = radialError(joint3);
-        if (previousError * error < 0) {
-          let low = previousJoint3;
-          let high = joint3;
-          let lowError = previousError;
-          for (let iteration = 0; iteration < 32; iteration += 1) {
-            const middle = (low + high) / 2;
-            const middleError = radialError(middle);
-            if (lowError * middleError <= 0) {
-              high = middle;
-            } else {
-              low = middle;
-              lowError = middleError;
-            }
-          }
-          consider((low + high) / 2);
+        const baseAngle = freeBaseAngle ? current[0] : targetAngle - Math.atan2(combinedY, combinedX);
+        for (let turn = -1; turn <= 1; turn += 1) {
+          let joint1 = baseAngle + turn * Math.PI * 2;
+          if (joint1 < jointLimit[0] - tolerance || joint1 > jointLimit[1] + tolerance) continue;
+          joint1 = Math.max(jointLimit[0], Math.min(jointLimit[1], joint1));
+          const angles = [joint1, joint2, joint3];
+          const end = forward(angles)[3];
+          if (Math.hypot(x - end.x, y - end.y) >= 0.5) continue;
+          const difference1 = joint1 - current[0];
+          const difference3 = joint3 - current[2];
+          const score = difference1 * difference1 + difference3 * difference3;
+          if (!best || score < best.score) best = { angles, score };
         }
-        previousJoint3 = joint3;
-        previousError = error;
       }
-      consider(jointLimit[1]);
+
+      if (cosine < -1 - 1e-10 || cosine > 1 + 1e-10) return null;
+      const offset = Math.acos(Math.max(-1, Math.min(1, cosine)));
+      const centerAngle = Math.atan2(centerY, centerX);
+      [centerAngle + offset, centerAngle - offset].forEach((absoluteAngle) => {
+        for (let turn = -1; turn <= 1; turn += 1) {
+          consider(absoluteAngle - joint2 + turn * Math.PI * 2, radius < 1e-8);
+        }
+      });
       return best && best.angles;
     }
 
