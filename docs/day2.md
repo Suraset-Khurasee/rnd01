@@ -9,7 +9,7 @@ title: Journal Directory
 
 [Arm Structure Simulator](../d2/structure/)
 
-[Tkinter](../d2/tkinter.md/)
+[Tkinter](../d2/tkinter/)
 
 ## Developments
 [EZ-UI - Draft](../d2/EZ-Gui/)
