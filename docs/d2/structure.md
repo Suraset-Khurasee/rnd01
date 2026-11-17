@@ -197,6 +197,50 @@ title: Arm Structure
       });
     }
 
+    function findSolution(x, y) {
+      const current = state.angles.map(degToRad);
+      const limits = [[-180, 180], [-170, 170], [-170, 170]].map(([min, max]) => [degToRad(min), degToRad(max)]);
+      const radius = Math.hypot(x, y);
+      let best = null;
+
+      function consider(angles) {
+        if (angles.some((angle, index) => angle < limits[index][0] || angle > limits[index][1])) return;
+        const end = forward(angles)[3];
+        if (Math.hypot(x - end.x, y - end.y) >= 0.5) return;
+        const score = angles.reduce((total, angle, index) => {
+          const difference = Math.atan2(Math.sin(angle - current[index]), Math.cos(angle - current[index]));
+          return total + difference * difference;
+        }, 0);
+        if (!best || score < best.score) best = { angles, score };
+      }
+
+      if (radius < 1e-8) {
+        const q3 = Math.acos((lengths[0] ** 2 - lengths[1] ** 2 - lengths[2] ** 2) / (2 * lengths[1] * lengths[2]));
+        [q3, -q3].forEach((joint3) => {
+          const offset = Math.atan2(lengths[2] * Math.sin(joint3), lengths[1] + lengths[2] * Math.cos(joint3));
+          [Math.PI, -Math.PI].forEach((elbow) => consider([current[0], elbow - offset, joint3]));
+        });
+      } else {
+        const targetAngle = Math.atan2(y, x);
+        for (let step = -340; step <= 340; step += 1) {
+          const joint3 = degToRad(step / 2);
+          const combinedX = lengths[1] + lengths[2] * Math.cos(joint3);
+          const combinedY = lengths[2] * Math.sin(joint3);
+          const combinedLength = Math.hypot(combinedX, combinedY);
+          const combinedAngle = Math.atan2(combinedY, combinedX);
+          const elbowCos = (radius ** 2 - lengths[0] ** 2 - combinedLength ** 2) / (2 * lengths[0] * combinedLength);
+          if (elbowCos < -1 - 1e-10 || elbowCos > 1 + 1e-10) continue;
+          const elbowAngle = Math.acos(Math.max(-1, Math.min(1, elbowCos)));
+          [elbowAngle, -elbowAngle].forEach((elbow) => {
+            const joint1 = targetAngle - Math.atan2(combinedLength * Math.sin(elbow), lengths[0] + combinedLength * Math.cos(elbow));
+            const joint2 = elbow - combinedAngle;
+            consider([Math.atan2(Math.sin(joint1), Math.cos(joint1)), joint2, joint3]);
+          });
+        }
+      }
+      return best && best.angles;
+    }
+
     function solve() {
       const x = Number(app.querySelector("[data-target-x]").value);
       const y = Number(app.querySelector("[data-target-y]").value);
@@ -206,47 +250,16 @@ title: Arm Structure
         solveMessage.classList.add("is-error");
         return;
       }
-      const next = state.angles.map(degToRad);
-      const limits = [[-180, 180], [-170, 170], [-170, 170]].map(([min, max]) => [degToRad(min), degToRad(max)]);
-      let error = Infinity;
-      for (let iteration = 0; iteration < 120; iteration += 1) {
-        const points = forward(next);
-        const end = points[3];
-        const errorX = x - end.x;
-        const errorY = y - end.y;
-        error = Math.hypot(errorX, errorY);
-        if (error < 0.5) break;
-
-        const jacobian = next.map((_, index) => {
-          const pivot = points[index];
-          return {
-            x: -(end.y - pivot.y),
-            y: end.x - pivot.x
-          };
-        });
-        const damping = 4;
-        const xx = jacobian.reduce((sum, column) => sum + column.x * column.x, damping * damping);
-        const xy = jacobian.reduce((sum, column) => sum + column.x * column.y, 0);
-        const yy = jacobian.reduce((sum, column) => sum + column.y * column.y, damping * damping);
-        const determinant = xx * yy - xy * xy;
-        const projectedX = (yy * errorX - xy * errorY) / determinant;
-        const projectedY = (xx * errorY - xy * errorX) / determinant;
-        next.forEach((angle, index) => {
-          const change = Math.max(-0.25, Math.min(0.25, jacobian[index].x * projectedX + jacobian[index].y * projectedY));
-          next[index] = Math.max(limits[index][0], Math.min(limits[index][1], angle + change));
-        });
-      }
-      error = Math.hypot(x - forward(next)[3].x, y - forward(next)[3].y);
-      if (error >= 0.5) {
-        solveMessage.textContent = "Target is outside the reachable workspace.";
+      const solvedAngles = findSolution(x, y);
+      if (!solvedAngles) {
+        solveMessage.textContent = "No solution found within the joint limits.";
         solveMessage.classList.add("is-error");
         return;
       }
-      const solvedAngles = next.map(radToDeg);
       state.target = { x, y };
       solveMessage.textContent = "Target is inside the reachable workspace.";
       solveMessage.classList.remove("is-error");
-      animateTo(solvedAngles);
+      animateTo(solvedAngles.map(radToDeg));
     }
 
     ["q1", "q2", "q3"].forEach((name, index) => {
