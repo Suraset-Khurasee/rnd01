@@ -91,7 +91,7 @@ title: Arm Structure
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Move the target; inverse kinematics adjusts joints 1 and 3 while keeping joint 2 fixed.</p>
+        <p class="control-help">Move the target; inverse kinematics adjusts joints 1 and 2 while keeping joint 3 fixed.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
@@ -200,43 +200,49 @@ title: Arm Structure
     function findSolution(x, y) {
       const current = state.angles.map(degToRad);
       const jointLimit = [degToRad(0), degToRad(170)];
-      const joint2 = current[1];
+      const joint3 = current[2];
       const radius = Math.hypot(x, y);
       const targetAngle = Math.atan2(y, x);
-      const centerX = lengths[0] + lengths[1] * Math.cos(joint2);
-      const centerY = lengths[1] * Math.sin(joint2);
-      const centerRadius = Math.hypot(centerX, centerY);
-      const cosine = (radius * radius - centerRadius * centerRadius - lengths[2] * lengths[2]) / (2 * centerRadius * lengths[2]);
+      const combinedX = lengths[1] + lengths[2] * Math.cos(joint3);
+      const combinedY = lengths[2] * Math.sin(joint3);
+      const combinedLength = Math.hypot(combinedX, combinedY);
+      const combinedAngle = Math.atan2(combinedY, combinedX);
+      const cosine = (radius * radius - lengths[0] * lengths[0] - combinedLength * combinedLength) / (2 * lengths[0] * combinedLength);
       let best = null;
 
-      function consider(joint3, freeBaseAngle = false) {
+      function consider(joint1, joint2) {
         const tolerance = 1e-10;
-        if (joint3 < jointLimit[0] - tolerance || joint3 > jointLimit[1] + tolerance) return;
-        joint3 = Math.max(jointLimit[0], Math.min(jointLimit[1], joint3));
-        const combinedX = lengths[0] + lengths[1] * Math.cos(joint2) + lengths[2] * Math.cos(joint2 + joint3);
-        const combinedY = lengths[1] * Math.sin(joint2) + lengths[2] * Math.sin(joint2 + joint3);
-        const baseAngle = freeBaseAngle ? current[0] : targetAngle - Math.atan2(combinedY, combinedX);
-        for (let turn = -1; turn <= 1; turn += 1) {
-          let joint1 = baseAngle + turn * Math.PI * 2;
-          if (joint1 < jointLimit[0] - tolerance || joint1 > jointLimit[1] + tolerance) continue;
-          joint1 = Math.max(jointLimit[0], Math.min(jointLimit[1], joint1));
-          const angles = [joint1, joint2, joint3];
-          const end = forward(angles)[3];
-          if (Math.hypot(x - end.x, y - end.y) >= 0.5) continue;
-          const difference1 = joint1 - current[0];
-          const difference3 = joint3 - current[2];
-          const score = difference1 * difference1 + difference3 * difference3;
-          if (!best || score < best.score) best = { angles, score };
+        for (let joint1Turn = -1; joint1Turn <= 1; joint1Turn += 1) {
+          const candidate1 = joint1 + joint1Turn * Math.PI * 2;
+          if (candidate1 < jointLimit[0] - tolerance || candidate1 > jointLimit[1] + tolerance) continue;
+          for (let joint2Turn = -1; joint2Turn <= 1; joint2Turn += 1) {
+            const candidate2 = joint2 + joint2Turn * Math.PI * 2;
+            if (candidate2 < jointLimit[0] - tolerance || candidate2 > jointLimit[1] + tolerance) continue;
+            const limited1 = Math.max(jointLimit[0], Math.min(jointLimit[1], candidate1));
+            const limited2 = Math.max(jointLimit[0], Math.min(jointLimit[1], candidate2));
+            const angles = [limited1, limited2, joint3];
+            const end = forward(angles)[3];
+            if (Math.hypot(x - end.x, y - end.y) >= 0.5) continue;
+            const difference1 = limited1 - current[0];
+            const difference2 = limited2 - current[1];
+            const score = difference1 * difference1 + difference2 * difference2;
+            if (!best || score < best.score) best = { angles, score };
+          }
         }
       }
 
       if (cosine < -1 - 1e-10 || cosine > 1 + 1e-10) return null;
-      const offset = Math.acos(Math.max(-1, Math.min(1, cosine)));
-      const centerAngle = Math.atan2(centerY, centerX);
-      [centerAngle + offset, centerAngle - offset].forEach((absoluteAngle) => {
-        for (let turn = -1; turn <= 1; turn += 1) {
-          consider(absoluteAngle - joint2 + turn * Math.PI * 2, radius < 1e-8);
-        }
+      const elbowOffset = Math.acos(Math.max(-1, Math.min(1, cosine)));
+      if (radius < 1e-8) {
+        if (Math.abs(Math.PI - elbowOffset) > 1e-8) return null;
+        [elbowOffset, -elbowOffset].forEach((elbow) => consider(current[0], elbow - combinedAngle));
+        return best && best.angles;
+      }
+
+      [elbowOffset, -elbowOffset].forEach((elbow) => {
+        const joint1 = targetAngle - Math.atan2(combinedLength * Math.sin(elbow), lengths[0] + combinedLength * Math.cos(elbow));
+        const joint2 = elbow - combinedAngle;
+        consider(joint1, joint2);
       });
       return best && best.angles;
     }
@@ -252,12 +258,12 @@ title: Arm Structure
       }
       const solvedAngles = findSolution(x, y);
       if (!solvedAngles) {
-        solveMessage.textContent = `No solution with joint 2 fixed at ${state.angles[1]}° and joints 1 and 3 limited to 0°–170°.`;
+        solveMessage.textContent = `No solution with joint 3 fixed at ${state.angles[2]}° and joints 1 and 2 limited to 0°–170°.`;
         solveMessage.classList.add("is-error");
         return;
       }
       state.target = { x, y };
-      solveMessage.textContent = `Target reached with joint 2 fixed at ${state.angles[1]}°.`;
+      solveMessage.textContent = `Target reached with joint 3 fixed at ${state.angles[2]}°.`;
       solveMessage.classList.remove("is-error");
       animateTo(solvedAngles.map(radToDeg));
     }
