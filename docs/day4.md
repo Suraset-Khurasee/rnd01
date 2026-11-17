@@ -5,8 +5,6 @@ title: Journal Directory
 
 # Day 4
 
-## Resources
-
 ## Skills We Learnt
 - [Mixed-precision Quantization](../d4/mpq/)
 - [Structured Pruning](../d4/pru/)
