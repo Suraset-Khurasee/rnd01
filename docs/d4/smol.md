@@ -36,7 +36,7 @@ SmolVLA is an open-source Vision-Language-Action model developed by Hugging Face
 | **Main Objective** | Improve accessibility and computational efficiency. | Improve generalisation to unfamiliar environments and tasks. |
 | **Architecture** | SmolVLM2 backbone with a separate action expert. | Vision-language architecture with high-level and low-level inference components. |
 | **Training Approach** | Pretraining on curated community-contributed robotic datasets, followed by fine-tuning. | Heterogeneous co-training using robotic demonstrations, web data and semantic task information. |
-| **Notable Feature** | Asynchronous inference to reduce idle time during action generation. | High-level semantic subtask prediction for more complex, long-horizon tasks. |
+
 
 ## 4. Relevance to This Project
 
