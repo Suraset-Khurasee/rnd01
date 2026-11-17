@@ -15,8 +15,16 @@ Hence, VLA comes in to solve this problem.
 
 For our first experiment, we plan to use SmolVLA due to its relatively low parameters requirement.
 
-## First experiment using the VR dataset we record at day 4
+## First experiment:  using the VR training model we record at day 4
 
 After trying several times with the trained robot arm we did yesterday, it did not work.
 
-SOON PUT VIDEO HERE
+SOON PUT VIDEO HERE : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
+
+Video trained : Pick up the red box 
+Prompt given : Pick the orange box (assuming that it can recognise using existing data from SMOLVLA)
+Reality : Does not recognised the orange box 
+
+## Second experiment: using online dataset to train
+
+Purpose: To check whether the VLA works or not
