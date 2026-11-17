@@ -40,5 +40,3 @@ Execution :
 Link to [Pre-trained model] (https://thaw-vla.trung-dt.com/)
 
 2. Labelling every episodes with a specific command
-
-3. i know what kind of god i want to be
