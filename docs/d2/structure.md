@@ -91,7 +91,7 @@ title: Arm Structure
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Choose a target point. The arm adjusts all three joints to reach it.</p>
+        <p class="control-help">Reachable targets have X and Y coordinates from -270 to 270 mm, and must be within 270 mm of the base.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
