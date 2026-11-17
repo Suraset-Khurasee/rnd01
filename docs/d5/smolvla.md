@@ -21,9 +21,12 @@ After trying several times with the trained robot arm we did yesterday, it did n
 
 SOON PUT VIDEO HERE : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
 
-Video trained : Pick up the red box 
-Prompt given : Pick the orange box (assuming that it can recognise using existing data from SMOLVLA)
-Reality : Does not recognised the orange box 
+**Video trained :** Pick up the red box.
+
+**Prompt given :** Pick the orange box (assuming that it can recognise using existing data from SMOLVLA).
+
+**Reality :** Does not recognised the orange box.
+
 
 
 ## Second experiment: using online dataset to train
