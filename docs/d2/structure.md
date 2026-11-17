@@ -62,15 +62,15 @@ title: Arm Structure
         <p class="control-help">Set the three joint angles to calculate the end-effector position.</p>
         <label class="number-control">
           <span>Joint 1 <b data-q1-value>20°</b></span>
-          <input type="range" min="-180" max="180" value="20" step="1" data-q1>
+          <input type="range" min="0" max="170" value="20" step="1" data-q1>
         </label>
         <label class="number-control">
           <span>Joint 2 <b data-q2-value>35°</b></span>
-          <input type="range" min="-170" max="170" value="35" step="1" data-q2>
+          <input type="range" min="0" max="170" value="35" step="1" data-q2>
         </label>
         <label class="number-control">
-          <span>Joint 3 <b data-q3-value>-20°</b></span>
-          <input type="range" min="-170" max="170" value="-20" step="1" data-q3>
+          <span>Joint 3 <b data-q3-value>20°</b></span>
+          <input type="range" min="0" max="170" value="20" step="1" data-q3>
         </label>
       </div>
 
@@ -91,7 +91,7 @@ title: Arm Structure
 
       <div class="control-section inverse-section">
         <h3>Inverse kinematics</h3>
-        <p class="control-help">Reachable targets have X and Y coordinates from -270 to 270 mm, and must be within 270 mm of the base.</p>
+        <p class="control-help">Targets must be within 270 mm of the base and reachable with each joint set from 0° to 170°.</p>
         <div class="target-inputs">
           <label>
             <span>Target X</span>
@@ -122,7 +122,7 @@ title: Arm Structure
     const origin = { x: 320, y: 260 };
     const lengths = [110, 90, 70];
     const scale = 1.15;
-    const state = { angles: [20, 35, -20], target: { x: 120, y: 140 }, frame: null };
+    const state = { angles: [20, 35, 20], target: { x: 120, y: 140 }, frame: null };
     const links = [...app.querySelectorAll("[data-link]")];
     const joints = {
       base: app.querySelector('[data-joint="base"]'),
@@ -199,7 +199,7 @@ title: Arm Structure
 
     function findSolution(x, y) {
       const current = state.angles.map(degToRad);
-      const limits = [[-180, 180], [-170, 170], [-170, 170]].map(([min, max]) => [degToRad(min), degToRad(max)]);
+      const limits = Array.from({ length: 3 }, () => [degToRad(0), degToRad(170)]);
       const radius = Math.hypot(x, y);
       let best = null;
 
@@ -222,7 +222,7 @@ title: Arm Structure
         });
       } else {
         const targetAngle = Math.atan2(y, x);
-        for (let step = -340; step <= 340; step += 1) {
+        for (let step = 0; step <= 340; step += 1) {
           const joint3 = degToRad(step / 2);
           const combinedX = lengths[1] + lengths[2] * Math.cos(joint3);
           const combinedY = lengths[2] * Math.sin(joint3);
