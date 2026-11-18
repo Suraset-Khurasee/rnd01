@@ -8,5 +8,5 @@ title: Day 5
 - [Phosphobot for simple SO-101 Teleoperation](../d5/phos/)
 
 ## Developments
-- [Implementing SmolVLA into Nero Arm Teleoperation](../d5/smolvla/)
+- [Implementing SmolVLA into Teleoperation System](../d5/smolvla/)
 
