@@ -85,6 +85,11 @@ For our first experiment, we plan to use SmolVLA due to its relatively low param
 
 ## First experiment:  using the VR training model we record at day 4
 
+### Equipment
+- 2 AgileX NERO Robotic Arm
+- A red cube
+- A black tray
+
 After trying several times with the trained robot arm we did yesterday, it did not work.
 
 [fail.mp4](../../images/fail.mp4) : FAILED TO PICK UP THE BOX BASED ON THE PROMPT GIVEN
@@ -112,6 +117,11 @@ Link to [Pre-trained model] (https://thaw-vla.trung-dt.com/)
 ## Third experiment: using our own dataset
 
 Task given: pick up the red box and place it down in the box
+
+### Equipments
+- 2 SO-100 Robotic Arm
+- A red cube
+- A grey tray
 
 ### Settings:
 - FPS: 30
