@@ -35,7 +35,7 @@ Calibration is important because it tells the software how the digital joint val
 
 [Demo](../../images/ps.mp4)
 
-
+---
 
 [Phosphobot GitHub repository](https://github.com/phospho-app/phosphobot)
 
