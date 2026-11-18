@@ -108,3 +108,35 @@ Execution :
 Link to [Pre-trained model] (https://thaw-vla.trung-dt.com/)
 
 2. Labelling every episodes with a specific command
+
+## Third experiment: using our own dataset
+
+Task given: pick up the red box and place it down in the box
+
+### Settings:
+- FPS: 30
+- No. of episodes: 20
+- Chunk for training: 20000
+
+### Methodology
+
+We train it similarly to ACT by putting the red box in the same spot for each recording. We tried to keep each recording as identical as humanly possible
+
+### Result
+
+The robot failed the task as it did not manage to pick up and deliver the cube to our desired destination. However, we noticed that the robot did manage to identify the red cube from a certain range and point towards the cube. The problem regarding the pick-up motion might be due to our data only recording one set of joints' activities as the robot moves to each position each time.
+
+## Fourth experiment: using our own but different dataset
+
+Task given: pick up a red box located randomly within a tray and place it estimately on the tape marker
+
+### Settings:
+- FPS: 30
+- No. of episodes: 60 (10 for each position, total of 60 for 6 different positions)
+- Chunk for training: 40000
+
+### Methodology 
+
+We place the red cube in 6 different position, each position is recorded 10 times making up a total of 60 recordings. We try to keep the original and ending position of the arm as identical as humanly possible. 
+
+### Result
