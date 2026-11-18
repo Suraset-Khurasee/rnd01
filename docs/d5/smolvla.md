@@ -150,3 +150,7 @@ Task given: pick up a red box located randomly within a tray and place it estima
 We place the red cube in 6 different position, each position is recorded 10 times making up a total of 60 recordings. We try to keep the original and ending position of the arm as identical as humanly possible. 
 
 ### Result
+
+The robotic arm struggled to pick up the cube consistently, and it has a very low rate of success. However, the arm did manage to detect and track the red cube position.
+
+See video [here.](../../images/lol.mp4)

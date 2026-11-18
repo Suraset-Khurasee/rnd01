@@ -33,7 +33,7 @@ Calibration is important because it tells the software how the digital joint val
 
 **DEMONSTRATION USING PS5 CONTROLLER**
 
-[Demo](../../images/ps.mp4)
+[Demo.mp4](../../images/ps.mp4)
 
 ---
 

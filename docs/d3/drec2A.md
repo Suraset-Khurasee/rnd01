@@ -24,6 +24,8 @@ Since we were working in a shared lab, we did not want to move items too frequen
 
 ### Execution
 
+The policy chosen during this recording was ACT (Action Chunking Transformers).
+
 For the important settings of the recording, we chose:
 - 40 episodes of recoding
 - 30 seconds of recording time
