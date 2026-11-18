@@ -32,7 +32,7 @@ So the keyboard or VR code does not need to know the SO-100's servo IDs or mecha
 Calibration is important because it tells the software how the digital joint values match the real arm. The SO-100 should be calibrated in Phosphobot first. If LeRobot is used for training, it also needs its own calibration because the two calibration systems are separate.
 
 **DEMONSTRATION USING PS5 CONTROLLER**
-[vr.mp4](../../images/ps.mp4)
+[Demo](../../images/ps.mp4)
 
 
 
