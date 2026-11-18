@@ -15,7 +15,6 @@ title: Home
 **Mentor:** Mr Jonathan  
 **Project start:** 11 November 2026  
 **Participants:** 3  
-**Equipment:** AgileX Nero Robotic arm
 
 This site is the working documentation for the project.
 
