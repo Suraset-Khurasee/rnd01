@@ -28,3 +28,4 @@ This site is the working documentation for the project.
 - [Day 4](/docs/day4.md)
 - [Day 5](/docs/day5.md)
 - [Day 6](/docs/day6.md)
+- [Day 7](/docs/day7.md)
