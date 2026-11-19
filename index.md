@@ -29,3 +29,6 @@ This site is the working documentation for the project.
 - [Day 5](/docs/day5.md)
 - [Day 6](/docs/day6.md)
 - [Day 7](/docs/day7.md)
+
+---
+SETUP FOR [SINGLE ARM](/docs/HOW_TO_SETUP_SINGLEARMRDPNOV2026_ON_OTHER_PC.md)
