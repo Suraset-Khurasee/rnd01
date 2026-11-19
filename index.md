@@ -32,3 +32,4 @@ This site is the working documentation for the project.
 
 ---
 SETUP FOR [SINGLE ARM](/docs/HOW_TO_SETUP_SINGLEARMRDPNOV2026_ON_OTHER_PC.md)
+[FINAL PRESENTATION](https://www.canva.com/design/DAHbUrz2CsY/h2oK43PEdu2aNbtqb8rD-g/edit?success=true&continue_in_browser=true)
