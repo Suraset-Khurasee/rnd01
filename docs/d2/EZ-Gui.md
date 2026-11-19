@@ -38,10 +38,42 @@ Errors and limitations:
 
 ## Step 1. Hardware Configuration
 
+Making sure both CAN channels are online and available to use by pressing "Bring up CAN Interfaces (sudo)"
+
+Make sure that both of the channels output "UP"
+
 ## Step 2. Testing Teleoperation
+
+Choose the desire teleoperation option and settings, and press "Run Step Command".
+
+The UI pop-up is a software that monitors the cameras' views and joints' activities. This is not a recording, hence, feel free to move around and interact with the environment.
+
+When you want to stop, press "Stop Process" and close the UI pop-up. If done correctly, the "Run Step Command" will be available again.
+
+NOTICE: PRESS "EMERGENCY STOP" IMMEDIATELY IF DETECT ANY ANOMALIES WHILE TELEOPERATING.
 
 ## Step 3. Recording
 
+Firstly, choose a task name in order to record, do note that the file's name shall be unique and does not overlap with any existing recording file. Afterwards, choose your desire output directory.
+
+For the settings, the "Task Instruction" is not important and only serves as a mental note for the operators about the task they are doing, it does not affect training or data recording at all. 
+
+Important settings to take note of:
+- Num Episodes: indicate number of recordings in the dataset
+- Episode Time (s): indicate the number of time that will be recorded in seconds
+- Reset Time (s): indicate the time available to reset the environment
+
+The other settings are hardware dependent and does not matter as long as the hardware is sufficient for training and rolling-out.
+
 ## Step 4. Training
 
+For training, "Training Dataset Root" will be where the trained dataset will be located in.
+
+Afterwards, choose your desire training preset which will affect how well the robot understands the task.
+
 ## Step 5. Roll-out
+
+Pick your desire trained models.
+(For a model that was trained quite recently, the name of file usually contain "demo_task/previously_trained", just find anything that resembles this)
+
+Choose duration for rolling-out, 0 is for infinite.
