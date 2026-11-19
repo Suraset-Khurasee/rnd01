@@ -34,7 +34,7 @@ Errors and limitations:
 - CAN socket when connected shows "UP" although the robot's power is off. Can be changed to "DOWN" if offline
 - When improperly closing the GUI the program infinitely runs on autonomous rollout.
 
-# Basic guidance for EZ-GUI (to be updated)
+# Basic guidance for EZ-GUI
 
 ## Step 1. Hardware Configuration
 
